@@ -87,7 +87,10 @@ async function createMessageTable(messagerow, allsuperchatters, showactions, dep
 		fillInReply(uniqueid,parentid);
 
 		replyTo = await getReply(uniqueid, parentid);
-		replyTo = replyTo.split('%20').join(' ');
+
+		if (typeof replyTo === 'string') {
+			replyTo = replyTo.split('%20').join(' ');
+		}
 	}
 
 	//Finish up the table
