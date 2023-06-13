@@ -85,12 +85,12 @@
 	<script id="header-alt-template" type="text/x-handlebars-template">
 		<header class="header">
 			<div class="header__left">
-				<svg class="pointer" width="16" onclick="gohome()" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<svg class="pointer" width="16" onclick="event.stopPropagation();gohome()" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<path d="M8 16L0 8L8 0L9.05 1.05L2.85 7.25H16V8.75H2.85L9.05 14.95L8 16Z" fill="#F9F9FA"/>
 				</svg>
 			</div>
 			<div class="header__center">
-				<svg class="logo" onclick="gohome()" width="82" height="18" viewBox="0 0 82 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<svg class="logo" onclick="event.stopPropagation();gohome()" width="82" height="18" viewBox="0 0 82 18" fill="none" xmlns="http://www.w3.org/2000/svg">
 					<g clip-path="url(#clip0_124_2)">
 						<path d="M8.46671 5.16029V6.23387H5.48454V5.16029C5.48454 4.44457 4.93582 3.89585 4.2201 3.89585C3.50438 3.89585 2.95566 4.44457 2.95566 5.16029V12.8397C2.95566 13.5316 3.52824 14.1041 4.2201 14.1041C4.91196 14.1041 5.48454 13.5316 5.48454 12.8397V11.7423H8.46671V12.8397C8.46671 15.1777 6.55812 17.0625 4.2201 17.0625C1.88208 17.0625 0 15.1777 0 12.8397V5.16029C0 2.82227 1.88473 0.937538 4.22275 0.937538C6.56077 0.937538 8.46671 2.82227 8.46671 5.16029Z" fill="#ECFF75"></path>
 						<path d="M15.5047 7.49493H18.0336V1.27081H21.0157V16.6562H18.0336V10.4559H15.5047V16.6562H12.5464V1.27081H15.5047V7.49493Z" fill="#ECFF75"></path>
@@ -384,5 +384,6 @@
 		}
 
 	</script>
+	<script src="./titlebar.js"></script>
 </body>
 </html>
