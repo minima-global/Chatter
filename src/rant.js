@@ -44,7 +44,7 @@ async function createMessageTable(messagerow, allsuperchatters, showactions, dep
 
 	//Sanitize and clean the input - allow our custom youtube tag
 	var dbmsg 		= decodeStringFromDB(messagerow.MESSAGE).replaceAll("\n","<br>");
-	var msg 		= DOMPurify.sanitize(dbmsg,{ ADD_TAGS: ["youtube","spotify_track","spotify_artist","spotify_album","spotify_playlist"]});
+	var msg 		= DOMPurify.sanitize(dbmsg,{ ADD_TAGS: ["youtube","spotify_track","spotify_podcast","spotify_artist","spotify_album","spotify_playlist"]});
 
 	var parentid 	= DOMPurify.sanitize(messagerow.PARENTID+"");
 	var baseid 		= DOMPurify.sanitize(messagerow.BASEID+"");
@@ -134,17 +134,19 @@ async function createMessageTable(messagerow, allsuperchatters, showactions, dep
 	//Convert SPECIAL tags
 	msgtable = convertYouTube(msgtable);
 
-	//Sptify
+	//Spotify
 	msgtable = convertSpotify("track",msgtable);
 	msgtable = convertSpotify("artist",msgtable);
 	msgtable = convertSpotify("album",msgtable);
 	msgtable = convertSpotify("playlist",msgtable);
+	msgtable = convertSpotifyPodcast(msgtable);
 
 	let messageConverted = convertYouTube(msg);
 	messageConverted = convertSpotify("track",messageConverted);
 	messageConverted = convertSpotify("artist",messageConverted);
 	messageConverted = convertSpotify("album",messageConverted);
 	messageConverted = convertSpotify("playlist",messageConverted);
+	messageConverted = convertSpotifyPodcast(messageConverted);
 
 	return __templates.feedItem({
 		username: usernameorig,
@@ -288,6 +290,26 @@ function convertYouTube(msg){
 	}
 
 	return msg;
+}
+
+/**
+ * Works with track,artist,album,playlist
+ */
+function convertSpotifyPodcast(msg){
+	var tag = "spotify_podcast";
+
+	var starttag 	= "<"+tag+">";
+	var endtag 		= "</"+tag+">";
+
+	var actual =  msg.replaceAll(starttag,
+		"<iframe style='border-radius:12px' src='https://open.spotify.com/embed/episode/");
+
+	//And the end tags
+	actual =  actual.replaceAll(endtag,"?utm_source=generator' width='100%' height='352' "
+		+"frameBorder='0' allowfullscreen=''; allow='clipboard-write; encrypted-media; "
+		+"fullscreen; picture-in-picture' loading='lazy'></iframe>");
+
+	return actual;
 }
 
 /**
@@ -480,4 +502,50 @@ function embedFile(){
 
 	};
 	input.click();
+}
+
+function addSpotifyTrack() {
+	var url = document.getElementById('spoitfy-track-url').value;
+	var spotifyUrl = url.lastIndexOf('/');
+	var spotifyTrackId = url.substring(spotifyUrl + 1);
+
+	var isPodcast = url.includes('/episode');
+
+	if (isPodcast) {
+		document.getElementById("media-message").value = "<spotify_podcast>"+spotifyTrackId+"</spotify_podcast>";
+		document.getElementById('spotify-track-modal').style.display = 'none';
+		document.getElementById('media-box').innerHTML = "<div class='spotify-preview'>"+convertSpotifyPodcast("<spotify_podcast>"+spotifyTrackId+"</spotify_podcast>")+"</div>";
+		document.getElementById('preview').style.display = 'block';
+
+		return;
+	}
+
+	document.getElementById("media-message").value = "<spotify_track>"+spotifyTrackId+"</spotify_track>";
+	document.getElementById('spotify-track-modal').style.display = 'none';
+	document.getElementById('media-box').innerHTML = "<div class='spotify-preview'>"+convertSpotify("track", "<spotify_track>"+spotifyTrackId+"</spotify_track>")+"</div>";
+	document.getElementById('preview').style.display = 'block';
+}
+
+function addYoutubeVideo() {
+	var videoId = '';
+	var url = document.getElementById('youtube-url').value;
+
+	// append youtube shortened url
+	if (url.includes('youtu.be')) {
+		var youtubeUrl = url.lastIndexOf('/');
+		videoId = url.substring(youtubeUrl + 1);
+	} else {
+		videoId = url.split('v=')[1];
+		var ampersandPosition = videoId.indexOf('&');
+
+		// remove anything after &;
+		if(ampersandPosition != -1) {
+			videoId = videoId.substring(0, ampersandPosition);
+		}
+	}
+
+	document.getElementById("media-message").value = "<youtube>"+videoId+"</youtube>";
+	document.getElementById('youtube-modal').style.display = 'none';
+	document.getElementById('media-box').innerHTML = "<div class='youtube-preview'>"+convertYouTube("<youtube>"+videoId+"</youtube>")+"</div>";
+	document.getElementById('preview').style.display = 'block';
 }

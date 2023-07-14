@@ -23,6 +23,20 @@
 			<div id="media-box" class="media-box">
 			</div>
 			<div class="actions">
+				<button onclick="document.getElementById('youtube-modal').style.display = 'block'" class="button button--icon">
+					<svg width="25px" height="18px" viewBox="0 0 25 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+						<g transform="translate(0.000000, 0.000000)" fill="#FFF" fill-rule="nonzero">
+							<path d="M23.5678714,3.09375 C23.34375,1.85668931 22.2758792,0.955810687 21.0366214,0.674560687 C19.1821292,0.28125 15.75,0 12.0366214,0 C8.32543931,0 4.83837919,0.28125 2.98168931,0.674560687 C1.74462919,0.955810687 0.674560688,1.79956069 0.450439313,3.09375 C0.224121375,4.5 0,6.46875 0,9 C0,11.53125 0.224121375,13.5 0.505371375,14.90625 C0.731689312,16.1433107 1.79956069,17.0441893 3.03662138,17.3254393 C5.00537138,17.71875 8.38037137,18 12.09375,18 C15.8071292,18 19.1821292,17.71875 21.1508792,17.3254393 C22.3879393,17.0441893 23.4558107,16.2004393 23.6821292,14.90625 C23.90625,13.5 24.1875,11.4741214 24.2446292,9 C24.1303714,6.46875 23.8491214,4.5 23.5678714,3.09375 Z M9,12.9375 L9,5.0625 L15.8620607,9 L9,12.9375 Z" id="Shape"></path>
+						</g>
+					</svg>
+				</button>
+				<button onclick="document.getElementById('spotify-track-modal').style.display = 'block'" class="button button--icon">
+					<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+						<g transform="translate(0.500000, 0.500000)" fill="#FFF" fill-rule="nonzero">
+							<path d="M10.5,0 C4.725,0 0,4.725 0,10.5 C0,16.275 4.725,21 10.5,21 C16.275,21 21,16.275 21,10.5 C21,4.725 16.275,0 10.5,0 Z M14.639625,15.75 C14.447125,15.75 14.350875,15.65375 14.158375,15.5575 C12.714625,14.690375 10.885875,14.21 8.960875,14.21 C7.902125,14.21 6.747125,14.4025 5.784625,14.595 C5.592125,14.595 5.399625,14.69125 5.303375,14.69125 C4.918375,14.69125 4.629625,14.4025 4.629625,14.0175 C4.629625,13.6325 4.822125,13.34375 5.207125,13.34375 C6.458375,13.055 7.7105,12.8625 9.058,12.8625 C11.27175,12.8625 13.293,13.44 15.0255,14.4025 C15.218,14.595 15.4105,14.69125 15.4105,15.07625 C15.21625,15.5575 14.9275,15.75 14.639625,15.75 Z M15.6975,13.055875 C15.505,13.055875 15.3125,12.959625 15.12,12.863375 C13.48375,11.804625 11.172875,11.227125 8.67125,11.227125 C7.42,11.227125 6.264125,11.419625 5.39875,11.612125 C5.20625,11.708375 5.11,11.708375 4.9175,11.708375 C4.43625,11.708375 4.146625,11.323375 4.146625,10.9375 C4.146625,10.45625 4.339125,10.26375 4.820375,10.070375 C5.975375,9.781625 7.13125,9.492875 8.7675,9.492875 C11.4625,9.492875 13.965,10.166625 16.083375,11.417875 C16.372125,11.610375 16.564625,11.899125 16.564625,12.18875 C16.4675,12.67 16.179625,13.055875 15.6975,13.055875 Z M16.94875,9.975 C16.75625,9.975 16.66,9.87875 16.37125,9.7825 C14.44625,8.72375 11.655,8.05 8.96,8.05 C7.6125,8.05 6.16875,8.2425 4.916625,8.53125 C4.724125,8.53125 4.627875,8.6275 4.339125,8.6275 C3.761625,8.724625 3.376625,8.2425 3.376625,7.665875 C3.376625,7.08925 3.665375,6.79875 4.050375,6.703375 C5.59125,6.3175 7.2275,6.125 8.96,6.125 C11.94375,6.125 15.02375,6.79875 17.430875,8.05 C17.719625,8.2425 18.008375,8.53125 18.008375,9.0125 C17.912125,9.59 17.52625,9.975 16.94875,9.975 Z" id="Shape"></path>
+						</g>
+					</svg>
+				</button>
 				<button onclick="embedFile()" class="button">Image</button>
 				<button onclick="replyRant()" class="button button--primary">Reply</button>
 			</div>
@@ -67,6 +81,38 @@
 						<input id="make-super-chatter-warning-checkbox" type="checkbox" class="checkbox">
 						Don't show this again
 					</label>
+				</div>
+			</div>
+			<div class="modal-backdrop"></div>
+		</div>
+
+		<div id="youtube-modal" class="modal-container" style="display: none;">
+			<div class="modal">
+				<div class="modal-body">
+					<div class="modal__content">
+						Paste the whole youtube link below.
+						<input id="youtube-url" type="text" class="url-input" />
+					</div>
+					<div class="modal__actions">
+						<button onclick="document.getElementById('youtube-modal').style.display = 'none'" class="button button--no-padding button--transparent">Cancel</button>
+						<button onclick="addYoutubeVideo()" id="add-youtube-video-button" class="button button--no-padding button--transparent">Continue</button>
+					</div>
+				</div>
+			</div>
+			<div class="modal-backdrop"></div>
+		</div>
+
+		<div id="spotify-track-modal" class="modal-container" style="display: none;">
+			<div class="modal">
+				<div class="modal-body">
+					<div class="modal__content">
+						Paste the whole spotify track link below.
+						<input id="spoitfy-track-url" type="text" class="url-input" />
+					</div>
+					<div class="modal__actions">
+						<button onclick="document.getElementById('spotify-track-modal').style.display = 'none'" class="button button--no-padding button--transparent">Cancel</button>
+						<button onclick="addSpotifyTrack()" id="add-spotify-track-button" class="button button--no-padding button--transparent">Continue</button>
+					</div>
 				</div>
 			</div>
 			<div class="modal-backdrop"></div>
@@ -282,40 +328,6 @@
 			document.getElementById("previewwindow").style.display = "none";
 		}
 
-		function showPreview(){
-
-			//Get the Text..
-			var text = document.getElementById("mainmessage").value;
-			text += document.getElementById("media-message").value;
-
-			if(text.trim() == ""){
-				alert("Blank message!");
-				return;
-			}
-
-			//Check Length
-			var checklen = encodeStringForDB(text);
-			if(checklen.length>MAX_MESSAGE_LENGTH){
-				alert("Message too Long! Max "+MAX_MESSAGE_LENGTH+" characters..");
-				return;
-			}
-
-			var msgrow = {};
-			msgrow.MESSAGE 	= encodeStringForDB(text);
-			msgrow.USERNAME = MAXIMA_USERNAME;
-			msgrow.RECDATE  = (new Date()).getTime();
-			msgrow.PARENTID = "0x00";
-
-			//Show the message
-			var preview = document.getElementById("previewmessage");
-			preview.innerHTML = createMessageTable(msgrow,[],false);
-
-			document.getElementById("blackoutwindow").style.display = "block";
-			document.getElementById("previewwindow").style.display = "block";
-
-			return;
-		}
-
 		function replyRant(){
 
 			//Get the Text..
@@ -355,6 +367,8 @@
 
 			//Get the Text..
 			var text = document.getElementById("mainmessage").value;
+			text += document.getElementById("media-message").value;
+
 			if(text.trim() == ""){
 				alert("Blank message!");
 				return;
@@ -382,7 +396,6 @@
 
 			return;
 		}
-
 	</script>
 	<script src="titlebar.js"></script>
 </body>

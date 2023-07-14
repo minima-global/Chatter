@@ -249,8 +249,7 @@
 		<div class="feed-item__content">
 			<div class="feed-item__content-text">{{{message}}}</div>
 			{{#if isPosted}}
-				<div onclick="document.location.href='docview.html?uid={{ uid }}&baseid={{ baseId }}
-				&msgid={{ messageId }}'" class="feed-item__content-link">View all</div>
+				<div onclick="document.location.href='docview.html?uid={{ uid }}&baseid={{ baseId }}&msgid={{ messageId }}'" class="feed-item__content-link">View all</div>
 			{{/if}}
 		</div>
 		<div class="feed-item__actions">
@@ -487,41 +486,6 @@
 	function next(){
 		var prevlink="index.html?uid="+MDS.minidappuid+"&next="+MESSAGE_MAXTIME;
 		document.location.href=prevlink;
-	}
-
-	function addSpotifyTrack() {
-		var url = document.getElementById('spoitfy-track-url').value;
-		var spotifyUrl = url.lastIndexOf('/');
-		var spotifyTrackId = url.substring(spotifyUrl + 1);
-
-		document.getElementById("media-message").value = "<spotify_track>"+spotifyTrackId+"</spotify_track>";
-		document.getElementById('spotify-track-modal').style.display = 'none';
-		document.getElementById('media-box').innerHTML = "<div class='spotify-preview'>"+convertSpotify("track", "<spotify_track>"+spotifyTrackId+"</spotify_track>")+"</div>";
-		document.getElementById('preview').style.display = 'block';
-	}
-
-	function addYoutubeVideo() {
-		var videoId = '';
-		var url = document.getElementById('youtube-url').value;
-
-		// append youtube shortened url
-		if (url.includes('youtu.be')) {
-			var youtubeUrl = url.lastIndexOf('/');
-			videoId = url.substring(youtubeUrl + 1);
-		} else {
-			videoId = url.split('v=')[1];
-			var ampersandPosition = videoId.indexOf('&');
-
-			// remove anything after &;
-			if(ampersandPosition != -1) {
-				videoId = videoId.substring(0, ampersandPosition);
-			}
-		}
-
-		document.getElementById("media-message").value = "<youtube>"+videoId+"</youtube>";
-		document.getElementById('youtube-modal').style.display = 'none';
-		document.getElementById('media-box').innerHTML = "<div class='youtube-preview'>"+convertYouTube("<youtube>"+videoId+"</youtube>")+"</div>";
-		document.getElementById('preview').style.display = 'block';
 	}
 
 </script>
