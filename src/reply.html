@@ -237,6 +237,18 @@
 								</svg>
 								Rechatter
 							</button>
+							??
+							<button onclick="boost('{{ messageId }}')" class="button button--no-padding">
+								<svg width="22px" height="20px" viewBox="0 0 22 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+									<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+										<g id="arrow-up-(1)" transform="translate(1.900167, 1.043959)" stroke="#FFFFFF" stroke-width="2">
+											<line x1="9.36999304" y1="17.4123494" x2="9.36999304" y2="0" id="Path"></line>
+											<polyline id="Path" points="0 8.70617468 9.36999304 0 18.7399861 8.70617468"></polyline>
+										</g>
+									</g>
+								</svg>
+								Boost
+							</button>
 						{{/if}}
 					</div>
 					<div class="feed-item__actions-right">
@@ -302,7 +314,11 @@
 
 					selectAllSuperChatters(async function(supers){
 						//Show the message you are replying to..
-						replytree.innerHTML = await createMessageTable(chatmsg,supers,false);
+						const row = await createMessageTable(chatmsg,supers,false);
+
+						if (row) {
+							replytree.innerHTML = row;
+						}
 					});
 				});
 
@@ -389,7 +405,11 @@
 
 			//Show the message
 			var preview = document.getElementById("previewmessage");
-			preview.innerHTML = await createMessageTable(msgrow,[],false);
+			var row = await createMessageTable(msgrow,[],false);
+
+			if (row) {
+				preview.innerHTML = row;
+			}
 
 			document.getElementById("blackoutwindow").style.display = "block";
 			document.getElementById("previewwindow").style.display = "block";

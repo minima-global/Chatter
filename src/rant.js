@@ -31,7 +31,11 @@ function drawCompleteMainTable(thetable,allrows,callback){
 		for(var i=0;i<len;i++){
 			// var tablerow 	= thetable.insertRow(i);
 			// var cell1 	 	= tablerow.insertCell(0);
-			document.getElementById('feed').innerHTML += await createMessageTable(allrows[i], superchatters, true);
+			const row = await createMessageTable(allrows[i], superchatters, true);
+
+			if (row) {
+				document.getElementById('feed').innerHTML += row;
+			}
 		}
 
 		if(callback){
@@ -44,7 +48,11 @@ async function createMessageTable(messagerow, allsuperchatters, showactions, dep
 
 	//Sanitize and clean the input - allow our custom youtube tag
 	var dbmsg 		= decodeStringFromDB(messagerow.MESSAGE).replaceAll("\n","<br>");
-	var msg 		= DOMPurify.sanitize(dbmsg,{ ADD_TAGS: ["youtube","spotify_track","spotify_podcast","spotify_artist","spotify_album","spotify_playlist"]});
+	var msg 		= DOMPurify.sanitize(dbmsg,{ ADD_TAGS: ["boost","youtube","spotify_track","spotify_podcast","spotify_artist","spotify_album","spotify_playlist"]});
+
+	if (msg.includes('<boost></boost>')) {
+		return null;
+	}
 
 	var parentid 	= DOMPurify.sanitize(messagerow.PARENTID+"");
 	var baseid 		= DOMPurify.sanitize(messagerow.BASEID+"");
@@ -548,4 +556,30 @@ function addYoutubeVideo() {
 	document.getElementById('youtube-modal').style.display = 'none';
 	document.getElementById('media-box').innerHTML = "<div class='youtube-preview'>"+convertYouTube("<youtube>"+videoId+"</youtube>")+"</div>";
 	document.getElementById('preview').style.display = 'block';
+}
+
+function boost(msgid){
+	//Create the Chatter message
+	selectMessage(msgid, function(found,chatmsg){
+
+		if(!found){
+			return;
+		}
+
+		//Get the baseid
+		baseid = chatmsg.BASEID;
+
+		createRant('<boost>', msgid, baseid, function(rant){
+
+			//ok - now add this message to OUR DB
+			addRantToDB(rant,function(msg){
+
+				//And post over Maxima
+				postRant(rant)
+
+				//And reload the main table
+				document.location.href = "index.html?uid="+MDS.minidappuid;
+			});
+		});
+	});
 }

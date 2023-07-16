@@ -350,6 +350,8 @@ html {
 
 .feed-item__actions-left {
     flex: 1 1 auto;
+    display: flex;
+    gap: 16px;
     justify-content: flex-start;
 }
 
