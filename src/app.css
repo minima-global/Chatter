@@ -734,7 +734,7 @@ html {
 }
 
 .react-reaction:hover {
-    transform: scale(1.25);
+    transform: scale(1.2);
 }
 .react-reaction:active {
     transform: scale(0.92);
