@@ -48,10 +48,14 @@ async function createMessageTable(messagerow, allsuperchatters, showactions, dep
 
 	//Sanitize and clean the input - allow our custom youtube tag
 	var dbmsg 		= decodeStringFromDB(messagerow.MESSAGE).replaceAll("\n","<br>");
-	var msg 		= DOMPurify.sanitize(dbmsg,{ ADD_TAGS: ["boost","youtube","spotify_track","spotify_podcast","spotify_artist","spotify_album","spotify_playlist"]});
+	var msg 		= DOMPurify.sanitize(dbmsg,{ ADD_TAGS: ["reaction","boost","youtube","spotify_track","spotify_podcast","spotify_artist","spotify_album","spotify_playlist"]});
 
 	if (msg.includes('<boost></boost>')) {
 		return null;
+	}
+
+	if (msg.includes('<reaction>')) {
+		return;
 	}
 
 	var parentid 	= DOMPurify.sanitize(messagerow.PARENTID+"");
@@ -578,6 +582,32 @@ function boost(msgid){
 		baseid = chatmsg.BASEID;
 
 		createRant('<boost>', msgid, baseid, function(rant){
+
+			//ok - now add this message to OUR DB
+			addRantToDB(rant,function(msg){
+
+				//And post over Maxima
+				postRant(rant)
+
+				//And reload the main table
+				document.location.href = "index.html?uid="+MDS.minidappuid;
+			});
+		});
+	});
+}
+
+function react(msgid, reaction){
+	//Create the Chatter message
+	selectMessage(msgid, function(found,chatmsg){
+
+		if(!found){
+			return;
+		}
+
+		//Get the baseid
+		baseid = chatmsg.BASEID;
+
+		createRant('<reaction>'+reaction+'</reaction>', msgid, baseid, function(rant){
 
 			//ok - now add this message to OUR DB
 			addRantToDB(rant,function(msg){

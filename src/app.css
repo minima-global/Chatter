@@ -13,6 +13,9 @@
     --text-secondary-grey: #91919D;
     --primary-color: #ECFF75;
     --white: #FFFFFF;
+    --tw-shadow-color: 0 0 #0000;
+    --tw-shadow: 0 20px 25px -5px #0000001a,0 8px 10px -6px #0000001a;
+    --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color),0 8px 10px -6px var(--tw-shadow-color);
 }
 
 *, ::after, ::before {
@@ -132,6 +135,7 @@ html {
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
 }
 
 .button:disabled {
@@ -640,4 +644,98 @@ html {
 
 .author-title__username {
     font-weight: bolder;
+}
+
+.react:hover .react__container {
+    visibility: visible;
+    transform: scale(1);
+}
+
+.react__container:hover {
+    visibility: visible;
+    transform: scale(1);
+}
+
+.react__container {
+    transform: scale(0);
+    visibility: hidden;
+    transition: 0.15s all;
+    align-items: center;
+    position: absolute;
+    flex-direction: row;
+    margin-top: 100%;
+    width: fit-content;
+    padding-top: 30px;
+}
+
+.react__reactions {
+    display: flex;
+    padding: 8px;
+    gap: 12px;
+    flex-direction: row;
+    align-items: center;
+    border-radius: 3px;
+    --tw-backdrop-blur: blur(8px);
+    backdrop-filter: var(--tw-backdrop-blur);
+    box-shadow: var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow);
+}
+
+.react_thumbs_up {
+    width: 28px;
+    height: 28px;
+    display: block;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url('./reactions/thumbs_up_3d_default.png');
+}
+
+.react_heart {
+    width: 28px;
+    height: 28px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url('./reactions/heart_suit_3d.png');
+}
+
+.react_grinning_face {
+    width: 28px;
+    height: 28px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url('./reactions/grinning_face_3d.png');
+}
+.react_sad {
+    width: 28px;
+    height: 28px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url('./reactions/sad_but_relieved_face_3d.png');
+}
+
+.react_shocked {
+    width: 28px;
+    height: 28px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url('./reactions/face_with_open_mouth_3d.png');
+}
+
+.react_angry {
+    width: 28px;
+    height: 28px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url('./reactions/face_with_symbols_on_mouth_3d.png');
+}
+
+.react-reaction {
+    transform-origin: center;
+    transition: 0.2s all;
+}
+
+.react-reaction:hover {
+    transform: scale(1.25);
+}
+.react-reaction:active {
+    transform: scale(0.92);
 }

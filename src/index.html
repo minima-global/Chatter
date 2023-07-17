@@ -273,6 +273,26 @@
 						</svg>
 						Boost
 					</button>
+					<button class="button button--no-padding react">
+						<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+							<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+								<g id="thumbs-up" transform="translate(1.500000, 0.912349)" stroke="#FFFFFF" stroke-width="1.8">
+									<path d="M10.4998654,6.12492149 L10.4998654,2.62496635 C10.4998654,1.17523747 9.32462794,0 7.87489905,0 L4.37494392,7.87489905 L4.37494392,17.4998891 L14.2448174,17.4998891 C15.1174321,17.5096406 15.8639502,16.8751003 15.994795,16.0122947 L17.2022795,8.13739569 C17.2793275,7.6297756 17.1295654,7.11392901 16.7926609,6.72648882 C16.4557564,6.33904863 15.9657031,6.1191075 15.4523019,6.12492149 L10.4998654,6.12492149 Z M4.37494392,17.4997757 L1.74997757,17.4997757 C0.783491644,17.4997757 0,16.716284 0,15.7497981 L0,9.62487662 C0,8.6583907 0.783491644,7.87489905 1.74997757,7.87489905 L4.37494392,7.87489905" id="Shape"></path>
+								</g>
+							</g>
+						</svg>
+						React
+						<div class="react__container">
+							<div class="react__reactions">
+								<div onclick="react('{{ messageId }}', 'thumbs_up')" class="react-reaction react_thumbs_up"></div>
+								<div onclick="react('{{ messageId }}', 'heart')" class="react-reaction react_heart"></div>
+								<div onclick="react('{{ messageId }}', 'grinning_face')" class="react-reaction react_grinning_face"></div>
+								<div onclick="react('{{ messageId }}', 'sad')" class="react-reaction react_sad"></div>
+								<div onclick="react('{{ messageId }}', 'shocked')" class="react-reaction react_shocked"></div>
+								<div onclick="react('{{ messageId }}', 'angry')" class="react-reaction react_angry"></div>
+							</div>
+						</div>
+					</button>
 				{{/if}}
 			</div>
 			<div class="feed-item__actions-right">
