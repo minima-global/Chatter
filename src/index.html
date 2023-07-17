@@ -184,7 +184,7 @@
 		{{/if}}
 		<div class="feed-item">
 			<div class="feed-item__heading">
-				<div class="feed-item__heading-title">
+				<div class="feed-item__heading-title" onclick="document.location.href='user.html?uid={{ uid }}&publicKey={{ publicKey }}'">
 					{{{ username }}}  {{#if isPosted}}{{#if superChatter}}<span class="superchatter"></span>{{/if}}
 					&#8226;&nbsp; <span class="text-secondary-grey">{{{ prettyPostedAt }}}</span>{{/if}}
 				</div>
@@ -354,6 +354,8 @@
 
 	//Main message handler..
 	MDS.init(function(msg){
+
+		console.log(msg);
 
 		//Do initialisation
 		if(msg.event == "inited"){

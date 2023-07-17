@@ -218,6 +218,7 @@ html {
     display: flex;
     align-items: center;
     margin-bottom: 10px;
+    cursor: pointer;
 }
 
 .feed-item__menu {
@@ -623,4 +624,20 @@ html {
 
 .replies-item__inner {
     flex: 1 1 auto;
+}
+
+.gap-4 {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.author-title {
+    color: white;
+    font-size: 20px;
+    margin-bottom: 36px;
+}
+
+.author-title__username {
+    font-weight: bolder;
 }

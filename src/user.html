@@ -12,8 +12,10 @@
 		<section id="header"></section>
 		<div class="mobile-only">
 			<div class="gap"></div>
-			<div id="mainwindow"></div>
-			<div id="replywindow" class="replies flex flex-column"></div>
+
+			<div class="author-title">Showing messages for: <span id="author" class="author-title__username"></span></div>
+
+			<div id="mainwindow" class="gap-4"></div>
 
 			<div id="re-chatter-modal" class="modal-container" style="display: none;">
 				<div class="modal">
@@ -116,7 +118,7 @@
 							{{/if}}
 							<div class="feed-item">
 								<div class="feed-item__heading">
-									<div class="feed-item__heading-title" onclick="document.location.href='user.html?uid={{ uid }}&publicKey={{ publicKey }}'">
+									<div class="feed-item__heading-title" onclick="document.location.href='user.html?uid={{ publicKey }}'">
 										{{{ username }}}  {{#if superChatter}}<span class="superchatter"></span>{{/if}}
 										&#8226;&nbsp; <span class="text-secondary-grey">{{{ prettyPostedAt }}}</span>
 									</div>
@@ -242,10 +244,12 @@
 			});
 
 			var allsuperchatters = [];
+			var publicKey = MDS.form.getParams("publicKey");
 			var baseid = MDS.form.getParams("baseid");
 			var msgid  = MDS.form.getParams("msgid");
 			var replytree;
 			var mainwindow;
+			var authorFilled = false;
 			var maxDepth = 4;
 
 			document.getElementById('header').innerHTML = templates.header({ username: MAXIMA_USERNAME });
@@ -301,14 +305,21 @@
 						allsuperchatters = supers;
 
 						//Create the reply table
-						var tree = createReplyTable(baseid,function(treemsg){
-							replytree = document.getElementById("replywindow");
+						var tree = createHistoryTable(publicKey, async function(treemsg){
 							mainwindow = document.getElementById("mainwindow");
-							console.log(treemsg);
-							walkchat(treemsg.toprant,1);
 
-							if (treemsg.toprant && treemsg.toprant.replies.length === 0) {
-								document.getElementById('replywindow').style.display = 'none';
+							for (var msg of treemsg) {
+								var replymsg = await createMessageTable(msg,allsuperchatters,true,1);
+
+								if (replymsg) {
+
+									if (!authorFilled) {
+										document.getElementById('author').textContent = msg.USERNAME;
+										authorFilled = true;
+									}
+
+									mainwindow.innerHTML += replymsg;
+								}
 							}
 						});
 					});

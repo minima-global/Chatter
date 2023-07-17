@@ -359,6 +359,14 @@ function createReplyTable(baseid, callback){
 	});
 }
 
+function createHistoryTable(publicKey, callback){
+	MDS.sql("SELECT * FROM MESSAGES WHERE publickey='"+publicKey+"' ORDER BY recdate ASC", function(sqlmsg){
+
+		//AND.. finally return the Tree object
+		callback(sqlmsg.rows);
+	});
+}
+
 function recurseReply(allrows,current){
 	//Get all the replies..
 	current.replies = findRows(allrows,current.MESSAGEID);
