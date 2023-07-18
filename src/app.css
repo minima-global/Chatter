@@ -729,13 +729,46 @@ html {
 }
 
 .react-reaction {
+    border: 0;
+    background-color: transparent;
+    cursor: pointer;
     transform-origin: center;
     transition: 0.2s all;
 }
 
-.react-reaction:hover {
+.react-reaction:disabled {
+    filter: grayscale(1);
+    cursor: not-allowed;
+}
+
+.react-reaction:hover:not(:disabled) {
     transform: scale(1.2);
 }
 .react-reaction:active {
     transform: scale(0.92);
+}
+
+.feed-item-reaction {
+    background: linear-gradient(0deg, black, #191a1e);
+    padding: 16px;
+    font-weight: bold;
+    color: white;
+    display: flex;
+    gap: 20px;
+}
+
+.feed-item-reaction__item .react-reaction {
+    width: 20px;
+    height: 20px;
+    background-size: cover;
+}
+
+.feed-item-reaction__item .react-reaction:hover {
+    transform: none;
+}
+
+.feed-item-reaction__item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }

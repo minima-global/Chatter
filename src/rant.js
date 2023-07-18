@@ -23,7 +23,7 @@ function createMainTable(maxtime,callback){
 	});
 }
 
-function drawCompleteMainTable(thetable,allrows,callback){
+async function drawCompleteMainTable(thetable,allrows,callback){
 
 	//Get all the super chatters
 	selectAllSuperChatters(async function(superchatters){
@@ -31,9 +31,13 @@ function drawCompleteMainTable(thetable,allrows,callback){
 		for(var i=0;i<len;i++){
 			// var tablerow 	= thetable.insertRow(i);
 			// var cell1 	 	= tablerow.insertCell(0);
-			const row = await createMessageTable(allrows[i], superchatters, true);
+			const children = await selectChildMessages(allrows[i].MESSAGEID);
+			const reactions = await getReactions(children.rows);
+
+			const row = await createMessageTable(allrows[i], superchatters, true, 0, reactions);
 
 			if (row) {
+				console.log(reactions);
 				document.getElementById('feed').innerHTML += row;
 			}
 		}
@@ -44,7 +48,7 @@ function drawCompleteMainTable(thetable,allrows,callback){
 	});
 }
 
-async function createMessageTable(messagerow, allsuperchatters, showactions, depth = 0){
+async function createMessageTable(messagerow, allsuperchatters, showactions, depth = 0, reactions = { show: false }){
 
 	//Sanitize and clean the input - allow our custom youtube tag
 	var dbmsg 		= decodeStringFromDB(messagerow.MESSAGE).replaceAll("\n","<br>");
@@ -159,7 +163,7 @@ async function createMessageTable(messagerow, allsuperchatters, showactions, dep
 	messageConverted = convertSpotify("album",messageConverted);
 	messageConverted = convertSpotify("playlist",messageConverted);
 	messageConverted = convertSpotifyPodcast(messageConverted);
-
+console.log(reactions);
 	return __templates.feedItem({
 		username: usernameorig,
 		messageId: messageid,
@@ -175,6 +179,8 @@ async function createMessageTable(messagerow, allsuperchatters, showactions, dep
 		uid: uid,
 		depth,
 		isPosted,
+		showReactions: reactions.show,
+		...reactions,
 	});
 }
 
@@ -351,6 +357,8 @@ function createReplyTable(baseid, callback){
 	MDS.sql("SELECT * FROM MESSAGES WHERE baseid='"+baseid+"' ORDER BY recdate ASC", function(sqlmsg){
 		//The complete Chat object
 		var treechat = {};
+
+		console.log(sqlmsg);
 
 		//The top post id the starter
 		treechat.toprant = findRows(sqlmsg.rows,"0x00")[0];
@@ -596,7 +604,7 @@ function boost(msgid){
 	});
 }
 
-function react(msgid, reaction){
+function react(msgid, reaction, reloadOnThisPage = false){
 	//Create the Chatter message
 	selectMessage(msgid, function(found,chatmsg){
 
@@ -607,13 +615,17 @@ function react(msgid, reaction){
 		//Get the baseid
 		baseid = chatmsg.BASEID;
 
-		createRant('<reaction>'+reaction+'</reaction>', msgid, baseid, function(rant){
+		createRant('<reaction>'+reaction+'</reaction>', msgid, null, function(rant){
 
 			//ok - now add this message to OUR DB
 			addRantToDB(rant,function(msg){
 
 				//And post over Maxima
-				postRant(rant)
+				postRant(rant);
+
+				if (reloadOnThisPage) {
+					return window.location.reload();
+				}
 
 				//And reload the main table
 				document.location.href = "index.html?uid="+MDS.minidappuid;

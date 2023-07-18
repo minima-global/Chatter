@@ -141,9 +141,87 @@ function selectAllSuperChatters(callback){
  * Select All the recent messages
  */
 function selectRecentMessages(maxtime, limit,callback){
-	MDS.sql("SELECT * FROM MESSAGES WHERE recdate<"+maxtime+" ORDER BY recdate DESC LIMIT "+limit, function(sqlmsg){
+	MDS.sql("SELECT * FROM MESSAGES WHERE recdate<"+maxtime+" AND message NOT LIKE '%reaction%' AND message NOT LIKE '%boost%' ORDER BY recdate DESC LIMIT "+limit, function(sqlmsg){
 		callback(sqlmsg);
 	});
+}
+
+/**
+ * Select All the recent messages
+ */
+function selectChildMessages(parentId){
+	return new Promise(resolve => {
+		MDS.sql("SELECT * FROM MESSAGES WHERE PARENTID = '" + parentId + "'", function(sqlmsg){
+			resolve(sqlmsg);
+		});
+	});
+}
+
+/**
+ * Select All the recent messages
+ */
+function getReactions(messages){
+	const reactions = {
+		angry: 0,
+		sad: 0,
+		heart: 0,
+		shocked: 0,
+		thumbs_up: 0,
+		grinning_face: 0,
+		show: false,
+		sad_locked: false,
+		angry_locked: false,
+		heart_locked: false,
+		shocked_locked: false,
+		thumbs_up_locked: false,
+		grinning_face_locked: false,
+	};
+
+	for (const messagerow of messages) {
+		const message = messagerow.MESSAGE;
+		const dbmsg = decodeStringFromDB(message).replaceAll("\n","<br>");
+		const msg = DOMPurify.sanitize(dbmsg,{ ADD_TAGS: ["reaction","boost","youtube","spotify_track","spotify_podcast","spotify_artist","spotify_album","spotify_playlist"]});
+
+		if (msg.includes('<reaction>sad</reaction>')) {
+			reactions['sad'] += 1;
+			if (MAXIMA_PUBLICKEY === messagerow.PUBLICKEY) {
+				reactions['sad_locked'] = true
+			}
+		} else if (msg.includes('<reaction>thumbs_up</reaction>')) {
+			reactions['thumbs_up'] += 1;
+			if (MAXIMA_PUBLICKEY === messagerow.PUBLICKEY) {
+				reactions['thumbs_up_locked'] = true
+			}
+		} else if (msg.includes('<reaction>shocked</reaction>')) {
+			reactions['shocked'] += 1;
+			if (MAXIMA_PUBLICKEY === messagerow.PUBLICKEY) {
+				reactions['shocked_locked'] = true
+			}
+		} else if (msg.includes('<reaction>heart</reaction>')) {
+			reactions['heart'] += 1;
+			if (MAXIMA_PUBLICKEY === messagerow.PUBLICKEY) {
+				reactions['heart_locked'] = true
+			}
+		} else if (msg.includes('<reaction>grinning_face</reaction>')) {
+			reactions['grinning_face'] += 1;
+			if (MAXIMA_PUBLICKEY === messagerow.PUBLICKEY) {
+				reactions['grinning_face_locked'] = true
+			}
+		} else if (msg.includes('<reaction>angry</reaction>')) {
+			reactions['angry'] += 1;
+			if (MAXIMA_PUBLICKEY === messagerow.PUBLICKEY) {
+				reactions['angry_locked'] = true
+			}
+		}
+	}
+
+	for (const reactionType in reactions) {
+		if (reactions[reactionType]) {
+			reactions['show'] = true;
+		}
+	}
+
+	return reactions;
 }
 
 /**

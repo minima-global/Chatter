@@ -273,7 +273,7 @@
 						</svg>
 						Boost
 					</button>
-					<button class="button button--no-padding react">
+					<div class="button button--no-padding react">
 						<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 							<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
 								<g id="thumbs-up" transform="translate(1.500000, 0.912349)" stroke="#FFFFFF" stroke-width="1.8">
@@ -284,15 +284,15 @@
 						React
 						<div class="react__container">
 							<div class="react__reactions">
-								<div onclick="react('{{ messageId }}', 'thumbs_up')" class="react-reaction react_thumbs_up"></div>
-								<div onclick="react('{{ messageId }}', 'heart')" class="react-reaction react_heart"></div>
-								<div onclick="react('{{ messageId }}', 'grinning_face')" class="react-reaction react_grinning_face"></div>
-								<div onclick="react('{{ messageId }}', 'sad')" class="react-reaction react_sad"></div>
-								<div onclick="react('{{ messageId }}', 'shocked')" class="react-reaction react_shocked"></div>
-								<div onclick="react('{{ messageId }}', 'angry')" class="react-reaction react_angry"></div>
+								<button onclick="react('{{ messageId }}', 'thumbs_up')" {{#if thumbs_up_locked}}disabled{{/if}} class="react-reaction react_thumbs_up"></button>
+								<button onclick="react('{{ messageId }}', 'heart')" {{#if heart_locked}}disabled{{/if}} class="react-reaction react_heart"></button>
+								<button onclick="react('{{ messageId }}', 'grinning_face')" {{#if grinning_face_locked}}disabled{{/if}} class="react-reaction react_grinning_face"></button>
+								<button onclick="react('{{ messageId }}', 'sad')" {{#if sad_locked}}disabled{{/if}} class="react-reaction react_sad"></button>
+								<button onclick="react('{{ messageId }}', 'shocked')" {{#if shocked_locked}}disabled{{/if}} class="react-reaction react_shocked"></button>
+								<button onclick="react('{{ messageId }}', 'angry')" {{#if angry_locked}}disabled{{/if}} class="react-reaction react_angry"></button>
 							</div>
 						</div>
-					</button>
+					</div>
 				{{/if}}
 			</div>
 			<div class="feed-item__actions-right">
@@ -310,6 +310,46 @@
 			</div>
 		</div>
 	</div>
+	{{#if showReactions }}
+		<div class="feed-item-reaction">
+			{{#if thumbs_up }}
+				<div class="feed-item-reaction__item">
+					<div class="react-reaction react_thumbs_up"></div>
+					{{thumbs_up}}
+				</div>
+			{{/if }}
+			{{#if heart }}
+				<div class="feed-item-reaction__item">
+					<div class="react-reaction react_heart"></div>
+					{{heart}}
+				</div>
+			{{/if }}
+			{{#if grinning_face }}
+				<div class="feed-item-reaction__item">
+					<div class="react-reaction react_grinning_face"></div>
+					{{grinning_face}}
+				</div>
+			{{/if }}
+			{{#if sad }}
+				<div class="feed-item-reaction__item">
+					<div class="react-reaction react_sad"></div>
+					{{sad}}
+				</div>
+			{{/if }}
+			{{#if angry }}
+				<div class="feed-item-reaction__item">
+					<div class="react-reaction react_angry"></div>
+					{{angry}}
+				</div>
+			{{/if }}
+			{{#if shocked }}
+				<div class="feed-item-reaction__item">
+					<div class="react-reaction react_shocked"></div>
+					{{shocked}}
+				</div>
+			{{/if }}
+		</div>
+	{{/if}}
 	</div>
 </script>
 <script id="post-template" type="text/x-handlebars-template">
@@ -374,8 +414,6 @@
 
 	//Main message handler..
 	MDS.init(function(msg){
-
-		console.log(msg);
 
 		//Do initialisation
 		if(msg.event == "inited"){
