@@ -1,0 +1,46 @@
+name: Static Analysis
+on: workflow_dispatch
+
+jobs:
+  static_analysis:
+    name: Static Analysis
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set Node.js 16.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          cache: 'yarn'
+
+      - name: Install JS dependencies
+        run: yarn install
+
+      - name: Build production JS files
+        run: yarn run build
+
+      - name: Get current time
+        uses: josStorer/get-current-time@v2
+        id: current-time
+        with:
+          format: YYYY-MM-DD HH:mm:ss
+          utcOffset: "0"
+
+      - name: Zip production files
+        run: yarn run src:zip
+
+      - name: Get package info
+        id: package
+        uses: codex-team/action-nodejs-package-info@v1.1
+
+      - name: Veracode Upload And Scan
+        uses: veracode/veracode-uploadandscan-action@0.2.4
+        with:
+          appname: 'Minima APK + MiniDAPPS'
+          version: ${{ steps.package.outputs.name }} v${{ steps.package.outputs.version }} - Github - ${{ steps.current-time.outputs.formattedTime }}
+          createprofile: false
+          filepath: '${{ steps.package.outputs.name }}-src-${{ steps.package.outputs.version }}.mds.zip'
+          vid: '${{ secrets.VERACODE_API_ID }}'
+          vkey: '${{ secrets.VERACODE_API_KEY }}'
