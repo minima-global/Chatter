@@ -10,10 +10,11 @@
 	</head>
 	<body>
 		<section id="header"></section>
+
+		<div class="author-title"><span id="author" class="author-title__username"></span>'s Posts</div>
+
 		<div class="mobile-only">
 			<div class="gap"></div>
-
-			<div class="author-title">Showing messages for: <span id="author" class="author-title__username"></span></div>
 
 			<div id="mainwindow" class="gap-4"></div>
 
@@ -375,7 +376,7 @@
 								if (replymsg) {
 
 									if (!authorFilled) {
-										document.getElementById('author').textContent = msg.USERNAME;
+										document.getElementById('author').textContent = decodeURIComponent(msg.USERNAME);
 										authorFilled = true;
 									}
 

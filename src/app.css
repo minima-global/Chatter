@@ -638,12 +638,22 @@ html {
 
 .author-title {
     color: white;
-    font-size: 20px;
-    margin-bottom: 36px;
+    font-size: 16px;
+    margin-top: 24px;
+    margin-bottom: 24px;
+    margin-left: 24px;
 }
 
 .author-title__username {
     font-weight: bolder;
+}
+
+@media (min-width: 768px) {
+    .author-title {
+        font-size: 20px;
+        margin-left: 24px;
+        margin-bottom: 36px;
+    }
 }
 
 .react:hover .react__container {
@@ -666,11 +676,12 @@ html {
     margin-top: 100%;
     width: fit-content;
     padding-top: 30px;
+    z-index: 50;
 }
 
 .react__reactions {
     display: flex;
-    padding: 8px;
+    padding: 12px;
     gap: 12px;
     flex-direction: row;
     align-items: center;
@@ -734,6 +745,7 @@ html {
     cursor: pointer;
     transform-origin: center;
     transition: 0.2s all;
+    background-size: contain;
 }
 
 .react-reaction:disabled {

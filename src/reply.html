@@ -389,7 +389,7 @@
 
 				if (el && preview) {
 					el.addEventListener('keyup', function() {
-						if (this.value.length > 0) {
+						if (this.value.replace(/\s/gi, '').length > 0) {
 							return preview.style.display = 'block';
 						}
 
