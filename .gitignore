@@ -2,3 +2,4 @@
 /.idea
 *.mds.zip
 node_modules
+build
