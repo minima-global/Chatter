@@ -37,7 +37,6 @@ async function drawCompleteMainTable(thetable,allrows,callback){
 			const row = await createMessageTable(allrows[i], superchatters, true, 0, reactions);
 
 			if (row) {
-				console.log(reactions);
 				document.getElementById('feed').innerHTML += row;
 			}
 		}
@@ -163,7 +162,7 @@ async function createMessageTable(messagerow, allsuperchatters, showactions, dep
 	messageConverted = convertSpotify("album",messageConverted);
 	messageConverted = convertSpotify("playlist",messageConverted);
 	messageConverted = convertSpotifyPodcast(messageConverted);
-console.log(reactions);
+
 	return __templates.feedItem({
 		username: usernameorig,
 		messageId: messageid,
@@ -357,8 +356,6 @@ function createReplyTable(baseid, callback){
 	MDS.sql("SELECT * FROM MESSAGES WHERE baseid='"+baseid+"' ORDER BY recdate ASC", function(sqlmsg){
 		//The complete Chat object
 		var treechat = {};
-
-		console.log(sqlmsg);
 
 		//The top post id the starter
 		treechat.toprant = findRows(sqlmsg.rows,"0x00")[0];
@@ -578,6 +575,23 @@ function addYoutubeVideo() {
 	document.getElementById('preview').style.display = 'block';
 }
 
+function requestBoost(msgid) {
+	var boostModal = document.getElementById('boost-modal');
+	var boostButton = document.getElementById('boost-post-button');
+
+	if (!SHOW_RE_CHATTER_WARNING) {
+		return boost(msgid);
+	}
+
+	boostButton.addEventListener('click', function() {
+		boost(msgid);
+	});
+
+	if (boostModal) {
+		boostModal.style.display = 'block';
+	}
+}
+
 function boost(msgid){
 	//Create the Chatter message
 	selectMessage(msgid, function(found,chatmsg){
@@ -596,6 +610,13 @@ function boost(msgid){
 
 				//And post over Maxima
 				postRant(rant)
+
+				if (document.getElementById('boost-warning-checkbox').checked) {
+					return setReChatterWarningToDisabled(function() {
+						//And reload the main table
+						document.location.href = "index.html?uid="+MDS.minidappuid;
+					});
+				}
 
 				//And reload the main table
 				document.location.href = "index.html?uid="+MDS.minidappuid;

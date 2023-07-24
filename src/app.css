@@ -651,12 +651,24 @@ html {
 @media (min-width: 768px) {
     .author-title {
         font-size: 20px;
-        margin-left: 24px;
+        margin-left: 0;
         margin-bottom: 36px;
     }
 }
 
 .react:hover .react__container {
+    visibility: visible;
+    transform: scale(1);
+}
+
+.react__reactions-pipe {
+    width: 52px;
+    height: 40px;
+    bottom: -100%;
+    position: absolute;
+}
+
+.react__reactions-pipe:hover ~ .react__container {
     visibility: visible;
     transform: scale(1);
 }
@@ -673,16 +685,17 @@ html {
     align-items: center;
     position: absolute;
     flex-direction: row;
-    margin-top: 100%;
     width: fit-content;
-    padding-top: 30px;
     z-index: 50;
+    padding-top: 40px;
 }
 
 .react__reactions {
     display: flex;
     padding: 12px;
     gap: 12px;
+    position: absolute;
+    left: -120px;
     flex-direction: row;
     align-items: center;
     border-radius: 3px;

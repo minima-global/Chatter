@@ -13,6 +13,7 @@ var MAXIMA_CONTACT   = "";
 
 var MAX_MESSAGE_LENGTH = 250000;
 
+var SHOW_BOOST_WARNING = true;
 var SHOW_RE_CHATTER_WARNING = true;
 var SHOW_SUPER_CHATTER_WARNING = true;
 
@@ -654,6 +655,14 @@ function checkWarnings() {
 			if (msg.count > 0) {
 				SHOW_SUPER_CHATTER_WARNING = false;
 			}
+
+			var query = "SELECT * FROM settings WHERE k = 'SHOW_BOOST_WARNING'";
+
+			MDS.sql(query,function(msg){
+				if (msg.count > 0) {
+					SHOW_BOOST_WARNING = false;
+				}
+			});
 		});
 	});
 }
@@ -669,6 +678,22 @@ function setReChatterWarningToDisabled(callback) {
 		}
 
 		SHOW_RE_CHATTER_WARNING = false;
+
+		MDS.sql(query, callback);
+	});
+}
+
+function setBoostWarningToDisabled(callback) {
+	var query = "SELECT * FROM settings WHERE key = 'SHOW_BOOST_WARNING'";
+
+	MDS.sql(query,function(msg){
+		if (msg.count === 0) {
+			query = `INSERT INTO settings (k, v) VALUES ('SHOW_BOOST_WARNING', '1')`;
+		} else {
+			query = `UPDATE settings SET v = '1' WHERE k 'SHOW_BOOST_WARNING'`;
+		}
+
+		SHOW_BOOST_WARNING = false;
 
 		MDS.sql(query, callback);
 	});
