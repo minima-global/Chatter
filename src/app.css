@@ -376,6 +376,7 @@ html {
 .replies-item {
     display: flex;
     flex: 1 1 auto;
+    flex-direction: column;
     background: var(--core-black);
 }
 
@@ -782,7 +783,7 @@ html {
 }
 
 .feed-item-reaction__item .react-reaction {
-    width: 20px;
+    width: 22px;
     height: 20px;
     background-size: cover;
 }

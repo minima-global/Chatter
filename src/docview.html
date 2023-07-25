@@ -269,49 +269,48 @@
 							</div>
 						</div>
 					</div>
-
-				</div>
+				{{#if showReactions }}
+					<div class="feed-item-reaction">
+						{{#if thumbs_up }}
+							<div class="feed-item-reaction__item">
+								<div class="react-reaction react_thumbs_up"></div>
+								{{thumbs_up}}
+							</div>
+						{{/if }}
+						{{#if heart }}
+							<div class="feed-item-reaction__item">
+								<div class="react-reaction react_heart"></div>
+								{{heart}}
+							</div>
+						{{/if }}
+						{{#if grinning_face }}
+							<div class="feed-item-reaction__item">
+								<div class="react-reaction react_grinning_face"></div>
+								{{grinning_face}}
+							</div>
+						{{/if }}
+						{{#if sad }}
+							<div class="feed-item-reaction__item">
+								<div class="react-reaction react_sad"></div>
+								{{sad}}
+							</div>
+						{{/if }}
+						{{#if angry }}
+							<div class="feed-item-reaction__item">
+								<div class="react-reaction react_angry"></div>
+								{{angry}}
+							</div>
+						{{/if }}
+						{{#if shocked }}
+							<div class="feed-item-reaction__item">
+								<div class="react-reaction react_shocked"></div>
+								{{shocked}}
+							</div>
+						{{/if }}
+					</div>
+				{{/if}}
 			</div>
-			{{#if showReactions }}
-				<div class="feed-item-reaction">
-					{{#if thumbs_up }}
-						<div class="feed-item-reaction__item">
-							<div class="react-reaction react_thumbs_up"></div>
-							{{thumbs_up}}
-						</div>
-					{{/if }}
-					{{#if heart }}
-						<div class="feed-item-reaction__item">
-							<div class="react-reaction react_heart"></div>
-							{{heart}}
-						</div>
-					{{/if }}
-					{{#if grinning_face }}
-						<div class="feed-item-reaction__item">
-							<div class="react-reaction react_grinning_face"></div>
-							{{grinning_face}}
-						</div>
-					{{/if }}
-					{{#if sad }}
-						<div class="feed-item-reaction__item">
-							<div class="react-reaction react_sad"></div>
-							{{sad}}
-						</div>
-					{{/if }}
-					{{#if angry }}
-						<div class="feed-item-reaction__item">
-							<div class="react-reaction react_angry"></div>
-							{{angry}}
-						</div>
-					{{/if }}
-					{{#if shocked }}
-						<div class="feed-item-reaction__item">
-							<div class="react-reaction react_shocked"></div>
-							{{shocked}}
-						</div>
-					{{/if }}
-				</div>
-			{{/if}}
+			</div>
 		</script>
 
 		<script type="text/javascript" src="moment.js"></script>
