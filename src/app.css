@@ -694,14 +694,20 @@ html {
     display: flex;
     padding: 12px;
     gap: 12px;
+    left: -20px;
     position: absolute;
-    left: -120px;
     flex-direction: row;
     align-items: center;
     border-radius: 3px;
     --tw-backdrop-blur: blur(8px);
     backdrop-filter: var(--tw-backdrop-blur);
     box-shadow: var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow);
+}
+
+@media (min-width: 768px) {
+    .react__reactions {
+        left: -120px;
+    }
 }
 
 .react_thumbs_up {
@@ -800,4 +806,44 @@ html {
 
 .hidden {
     display: none;
+}
+
+.splash {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: black;
+    z-index: 50;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.2s opacity;
+}
+
+.splash__icon {
+    margin-bottom: 24px;
+}
+
+.splash__content {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    max-width: 540px;
+    letter-spacing: 0.6px;
+    line-height: 28px;
+    margin-bottom: 42px;
+}
+
+.splash__textContent {
+    color: #b3b3b3;
+}
+
+.powered-by {
+    position: absolute;
+    left: 0;
+    bottom: 16px;
+    width: 100%;
 }

@@ -9,6 +9,17 @@
 	<link rel="icon" type="image/x-icon" href="icon.png">
 </head>
 <body>
+
+	<div id="splash" class="splash" onclick="document.getElementById('splash').style.opacity = '0';document.getElementById('splash').style.pointerEvents = 'none'">
+		<div class="splash__content">
+			<img class="splash__icon" src="./icon.png" width="100" height="100" alt="Chatter logo" />
+			<h1>Welcome to Chatter!</h1>
+			<p class="splash__textContent">Share ideas and media with your contacts.<br /> Peer-to-peer, encrypted and decentralised.</p>
+			<p class="splash__textContent">	No cookies or data harvesting, just freedom.</p>
+			<p class="powered-by">Powered by <strong>Maxima</strong></p>
+		</div>
+	</div>
+
 	<section id="header"></section>
 	<div class="mobile-only">
 
@@ -322,6 +333,7 @@
 						</div>
 					</div>
 				{{/if}}
+				</div>
 				<div class="feed-item__actions-right">
 					{{#if isPosted}}
 						<a href="reply.html?uid={{ uid }}&msgid={{ messageId }}">
@@ -337,7 +349,6 @@
 				</div>
 			</div>
 		</div>
-	</div>
 	{{#if showReactions }}
 		<div class="feed-item-reaction">
 			{{#if thumbs_up }}
@@ -378,6 +389,7 @@
 			{{/if }}
 		</div>
 	{{/if}}
+	</div>
 	</div>
 </script>
 <script id="post-template" type="text/x-handlebars-template">
