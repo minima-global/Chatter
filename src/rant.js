@@ -591,3 +591,107 @@ function boost(msgid){
 		});
 	});
 }
+<<<<<<< Updated upstream
+=======
+
+function react(msgid, reaction, reloadOnThisPage = false){
+	//Create the Chatter message
+	selectMessage(msgid, function(found,chatmsg){
+
+		if(!found){
+			return;
+		}
+
+		//Get the baseid
+		baseid = chatmsg.BASEID;
+
+		createRant('<reaction>'+reaction+'</reaction>', msgid, null, function(rant){
+
+			//ok - now add this message to OUR DB
+			addRantToDB(rant,function(msg){
+
+				//And post over Maxima
+				postRant(rant);
+
+				if (reloadOnThisPage) {
+					return window.location.reload();
+				}
+
+				//And reload the main table
+				document.location.href = "index.html?uid="+MDS.minidappuid;
+			});
+		});
+	});
+}
+
+function getReactions(messages){
+	const reactions = {
+		angry: 0,
+		sad: 0,
+		heart: 0,
+		shocked: 0,
+		thumbs_up: 0,
+		grinning_face: 0,
+		show: false,
+		sad_locked: false,
+		angry_locked: false,
+		heart_locked: false,
+		shocked_locked: false,
+		thumbs_up_locked: false,
+		grinning_face_locked: false,
+	};
+
+	for (const messagerow of messages) {
+		const message = messagerow.MESSAGE;
+		const dbmsg = decodeStringFromDB(message).replaceAll("\n","<br>");
+		const msg = DOMPurify.sanitize(dbmsg,{ ADD_TAGS: ["reaction","boost","youtube","spotify_track","spotify_podcast","spotify_artist","spotify_album","spotify_playlist"]});
+
+		if (msg.includes('<reaction>sad</reaction>')) {
+			reactions['sad'] += 1;
+			if (MAXIMA_PUBLICKEY === messagerow.PUBLICKEY) {
+				reactions['sad_locked'] = true
+			}
+		} else if (msg.includes('<reaction>thumbs_up</reaction>')) {
+			reactions['thumbs_up'] += 1;
+			if (MAXIMA_PUBLICKEY === messagerow.PUBLICKEY) {
+				reactions['thumbs_up_locked'] = true
+			}
+		} else if (msg.includes('<reaction>shocked</reaction>')) {
+			reactions['shocked'] += 1;
+			if (MAXIMA_PUBLICKEY === messagerow.PUBLICKEY) {
+				reactions['shocked_locked'] = true
+			}
+		} else if (msg.includes('<reaction>heart</reaction>')) {
+			reactions['heart'] += 1;
+			if (MAXIMA_PUBLICKEY === messagerow.PUBLICKEY) {
+				reactions['heart_locked'] = true
+			}
+		} else if (msg.includes('<reaction>grinning_face</reaction>')) {
+			reactions['grinning_face'] += 1;
+			if (MAXIMA_PUBLICKEY === messagerow.PUBLICKEY) {
+				reactions['grinning_face_locked'] = true
+			}
+		} else if (msg.includes('<reaction>angry</reaction>')) {
+			reactions['angry'] += 1;
+			if (MAXIMA_PUBLICKEY === messagerow.PUBLICKEY) {
+				reactions['angry_locked'] = true
+			}
+		}
+	}
+
+	for (const reactionType in reactions) {
+		if (reactions[reactionType]) {
+			reactions['show'] = true;
+		}
+	}
+
+	return reactions;
+}
+
+const openApp = (appName) => {
+	MDS.dapplink(appName, function (msg) {
+		console.log(msg);
+		return window.open(`${MDS.filehost}${msg.uid}/index.html?uid=${msg.sessionid}`, '_blank');
+	});
+}
+>>>>>>> Stashed changes

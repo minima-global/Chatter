@@ -9,6 +9,47 @@
 	<link rel="icon" type="image/x-icon" href="icon.png">
 </head>
 <body>
+<<<<<<< Updated upstream
+=======
+
+	<div id="splash" style="opacity: 0;" class="splash" onclick="dismissSplash()">
+		<div class="splash__content">
+			<img class="splash__icon" src="./icon.png" width="100" height="100" alt="Chatter logo" />
+			<h1>Welcome to Chatter!</h1>
+			<p class="splash__textContent">Share ideas and media with your contacts.<br /> Peer-to-peer, encrypted and decentralised.</p>
+			<p class="splash__textContent">	No cookies or data harvesting, just freedom.</p>
+			<p class="powered-by">Powered by <strong>Maxima</strong></p>
+		</div>
+	</div>
+
+	<div class="action">
+		<div>
+			<div>Looks like you're all alone here, noname.</div>
+
+			<div>
+				<div>Setup your profile, add some contacts, and then create your first post!</div>
+				<button onclick="openApp('MaxContacts')" class="button button--primary button--mx">Setup profile</button>
+			</div>
+
+			<div>
+				<div>Add some contacts, then create your first post!</div>
+				<button onclick="openApp('MaxContacts')" class="button button--primary button--mx">Add contacts</button>
+			</div>
+
+			<div>
+				<div>Create your first post</div>
+				<div>The more the merrier, invite your friends to join...</div>
+				<button class="button button--primary button--mx">Invite friends</button>
+
+				<div>
+					<textarea id="browser-share-textarea" rows="5" style="padding: 10px;width: 100%; max-width: 420px; word-break: break-all">Join me on Chatter, a peer-to-peer social media app built on Minima. https://play.google.com/store/apps/details?id=com.minima.android&hl=en&gl=US&pli=1</textarea>
+					<button id="browser-share-button" onclick="copy(this)" class="button button--primary button--mx">Copy</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+>>>>>>> Stashed changes
 	<section id="header"></section>
 	<div class="mobile-only">
 		<section id="message-box" class="message-box-container"></section>
@@ -360,6 +401,16 @@
 		//Do initialisation
 		if(msg.event == "inited"){
 
+			/**
+			 * Checks to see if splash should be shown
+			 */
+			MDS.keypair.get('SPLASH', function(response) {
+				if (response.value !== '1') {
+					document.getElementById('splash').style.opacity = '1';
+					document.getElementById('splash').style.pointerEvents = 'inherit';
+				}
+			});
+
 			//HACK to RESET
 			//MDS.sql("DROP table messages",function(){MDS.log("SQL DB wiped");});return;
 
@@ -499,6 +550,30 @@
 	function next(){
 		var prevlink="index.html?uid="+MDS.minidappuid+"&next="+MESSAGE_MAXTIME;
 		document.location.href=prevlink;
+	}
+
+	function dismissSplash() {
+		MDS.keypair.set('SPLASH', '1', function(response) {
+			document.getElementById('splash').style.opacity = '0';
+			document.getElementById('splash').style.pointerEvents = 'none';
+		});
+	}
+
+	function copy() {
+		const input = document.createElement('textarea');
+		input.textContent = document.getElementById('browser-share-textarea').textContent;
+		document.body.appendChild(input);
+		input.select();
+		document.execCommand('copy');
+		document.body.removeChild(input);
+
+		document.getElementById('browser-share-button').classList.add('button--outline');
+		document.getElementById('browser-share-button').textContent = 'Copied!';
+
+		setTimeout(() => {
+			document.getElementById('browser-share-button').classList.remove('button--outline');
+			document.getElementById('browser-share-button').textContent = 'Copy';
+		}, 3000);
 	}
 
 </script>

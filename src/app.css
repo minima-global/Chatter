@@ -134,6 +134,10 @@ html {
     align-items: center;
 }
 
+.button--mx {
+    margin: 0 auto;
+}
+
 .button:disabled {
     opacity: 0.5;
 }
@@ -162,6 +166,13 @@ html {
 .button--transparent {
     color: black;
     background-color: transparent;
+}
+
+.button--outline {
+    box-shadow:inset 0 0 0 1px var(--primary-color);
+    background: transparent;
+    color: var(--primary-color);
+    box-sizing: border-box;
 }
 
 .gap {
@@ -641,3 +652,214 @@ html {
 .author-title__username {
     font-weight: bolder;
 }
+<<<<<<< Updated upstream
+=======
+
+@media (min-width: 768px) {
+    .author-title {
+        font-size: 20px;
+        margin-left: 0;
+        margin-bottom: 36px;
+    }
+}
+
+.react:hover .react__container {
+    visibility: visible;
+    transform: scale(1);
+}
+
+.react__reactions-pipe {
+    width: 52px;
+    height: 40px;
+    bottom: -100%;
+    position: absolute;
+}
+
+.react__reactions-pipe:hover ~ .react__container {
+    visibility: visible;
+    transform: scale(1);
+}
+
+.react__container:hover {
+    visibility: visible;
+    transform: scale(1);
+}
+
+.react__container {
+    transform: scale(0);
+    visibility: hidden;
+    transition: 0.15s all;
+    align-items: center;
+    position: absolute;
+    flex-direction: row;
+    width: fit-content;
+    z-index: 50;
+    padding-top: 40px;
+}
+
+.react__reactions {
+    display: flex;
+    padding: 12px;
+    gap: 12px;
+    left: -20px;
+    position: absolute;
+    flex-direction: row;
+    align-items: center;
+    border-radius: 3px;
+    --tw-backdrop-blur: blur(8px);
+    backdrop-filter: var(--tw-backdrop-blur);
+    box-shadow: var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow);
+}
+
+@media (min-width: 768px) {
+    .react__reactions {
+        left: -120px;
+    }
+}
+
+.react_thumbs_up {
+    width: 28px;
+    height: 28px;
+    display: block;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url('./reactions/thumbs_up_3d_default.png');
+}
+
+.react_heart {
+    width: 28px;
+    height: 28px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url('./reactions/heart_suit_3d.png');
+}
+
+.react_grinning_face {
+    width: 28px;
+    height: 28px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url('./reactions/grinning_face_3d.png');
+}
+.react_sad {
+    width: 28px;
+    height: 28px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url('./reactions/sad_but_relieved_face_3d.png');
+}
+
+.react_shocked {
+    width: 28px;
+    height: 28px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url('./reactions/face_with_open_mouth_3d.png');
+}
+
+.react_angry {
+    width: 28px;
+    height: 28px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url('./reactions/face_with_symbols_on_mouth_3d.png');
+}
+
+.react-reaction {
+    border: 0;
+    background-color: transparent;
+    cursor: pointer;
+    transform-origin: center;
+    transition: 0.2s all;
+    background-size: contain;
+}
+
+.react-reaction:disabled {
+    filter: grayscale(1);
+    cursor: not-allowed;
+}
+
+.react-reaction:hover:not(:disabled) {
+    transform: scale(1.2);
+}
+.react-reaction:active {
+    transform: scale(0.92);
+}
+
+.feed-item-reaction {
+    background: linear-gradient(0deg, black, #191a1e);
+    padding: 16px;
+    font-weight: bold;
+    color: white;
+    display: flex;
+    gap: 20px;
+}
+
+.feed-item-reaction__item .react-reaction {
+    width: 22px;
+    height: 20px;
+    background-size: contain;
+}
+
+.feed-item-reaction__item .react-reaction:hover {
+    transform: none;
+}
+
+.feed-item-reaction__item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.hidden {
+    display: none;
+}
+
+.splash {
+    pointer-events: none;
+    opacity: 0;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: black;
+    z-index: 50;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.2s opacity;
+}
+
+.splash__icon {
+    margin-bottom: 24px;
+}
+
+.splash__content {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    max-width: 540px;
+    letter-spacing: 0.6px;
+    line-height: 28px;
+    margin-bottom: 42px;
+}
+
+.splash__textContent {
+    color: #b3b3b3;
+}
+
+.powered-by {
+    position: absolute;
+    left: 0;
+    bottom: 16px;
+    width: 100%;
+}
+
+.action {
+    padding: 40px;
+    color: white;
+    text-align: center;
+}
+>>>>>>> Stashed changes

@@ -1,8 +1,8 @@
 /**
-* MDS JS lib for MiniDAPPs..
-*
-* @spartacusrex
-*/
+ * MDS JS lib for MiniDAPPs..
+ *
+ * @spartacusrex
+ */
 
 /**
  * The MAIN Minima Callback function
@@ -13,6 +13,7 @@ var MDS_MAIN_CALLBACK = null;
  * Main MINIMA Object for all interaction
  */
 var MDS = {
+	filehost: "",
 
 	//RPC Host for Minima
 	mainhost : "",
@@ -68,6 +69,7 @@ var MDS = {
 
 		//The ports..
 		var mainport 	= port+1;
+		MDS.filehost = "https://"+host+":"+port+"/";
 
 		MDS.log("MDS FILEHOST  : https://"+host+":"+port+"/");
 
@@ -121,6 +123,30 @@ var MDS = {
 	sql : function(command, callback){
 		//Send via POST
 		httpPostAsync(MDS.mainhost+"sql?"+"uid="+MDS.minidappuid, command, callback);
+	},
+
+	/**
+	 * Get a link to a different Dapp. READ dapps can only get READ DAPPS. WRITE can get all dapps.
+	 */
+	dapplink : function(dappname, callback){
+		//Send via POST
+		httpPostAsync(MDS.mainhost+"dapplink?"+"uid="+MDS.minidappuid, dappname, function(result){
+
+			var linkdata 	= {};
+			linkdata.status = result.status;
+
+			//Create the link..
+			if(result.status){
+				linkdata.uid 		= result.response.uid;
+				linkdata.sessionid 	= result.response.sessionid;
+				linkdata.base 		= MDS.filehost+linkdata.uid+"/index.html?uid="+result.response.sessionid;
+			}else{
+				//Not found..
+				linkdata.error = result.error;
+			}
+
+			callback(linkdata);
+		});
 	},
 
 	/**
@@ -314,15 +340,15 @@ var MDS = {
 
 		//Return the GET parameter by scraping the location..
 		getParams : function(parameterName){
-			    var result = null,
-		        tmp = [];
-			    var items = window.location.search.substr(1).split("&");
-			    for (var index = 0; index < items.length; index++) {
-			        tmp = items[index].split("=");
-			        //console.log("TMP:"+tmp);
-				   if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
-			    }
-			    return result;
+			var result = null,
+				tmp = [];
+			var items = window.location.search.substr(1).split("&");
+			for (var index = 0; index < items.length; index++) {
+				tmp = items[index].split("=");
+				//console.log("TMP:"+tmp);
+				if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+			}
+			return result;
 		}
 	},
 
@@ -339,9 +365,9 @@ var MDS = {
 				thex = hexstring.substring(2);
 			}
 
-		    return btoa(thex.match(/\w{2}/g).map(function(a) {
-		        return String.fromCharCode(parseInt(a, 16));
-		    }).join(""));
+			return btoa(thex.match(/\w{2}/g).map(function(a) {
+				return String.fromCharCode(parseInt(a, 16));
+			}).join(""));
 		},
 
 		//Convert Base64 to HEX
@@ -357,13 +383,13 @@ var MDS = {
 
 		//Convert Base64 to a Uint8Array - useful for Blobs
 		base64ToArrayBuffer(base64) {
-		    var binary_string = window.atob(base64);
-		    var len = binary_string.length;
-		    var bytes = new Uint8Array(len);
-		    for (var i = 0; i < len; i++) {
-		        bytes[i] = binary_string.charCodeAt(i);
-		    }
-		    return bytes.buffer;
+			var binary_string = window.atob(base64);
+			var len = binary_string.length;
+			var bytes = new Uint8Array(len);
+			for (var i = 0; i < len; i++) {
+				bytes[i] = binary_string.charCodeAt(i);
+			}
+			return bytes.buffer;
 		}
 	}
 };
@@ -372,10 +398,10 @@ var MDS = {
  * Post a message to the Minima Event Listeners
  */
 function MDSPostMessage(json){
-   //And dispatch
-   if(MDS_MAIN_CALLBACK){
+	//And dispatch
+	if(MDS_MAIN_CALLBACK){
 		MDS_MAIN_CALLBACK(json);
-   }
+	}
 }
 
 
@@ -430,22 +456,22 @@ function httpPostAsync(theUrl, params, callback){
 	}
 
 	var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState == 4 && xmlHttp.status == 200){
+	xmlHttp.onreadystatechange = function() {
+		if (xmlHttp.readyState == 4 && xmlHttp.status == 200){
 			//Do we log it..
-        	if(MDS.logging){
-        		MDS.log("RESPONSE:"+xmlHttp.responseText);
-        	}
+			if(MDS.logging){
+				MDS.log("RESPONSE:"+xmlHttp.responseText);
+			}
 
-        	//Send it to the callback function..
-        	if(callback){
-        		callback(JSON.parse(xmlHttp.responseText));
-        	}
-        }
-    }
-    xmlHttp.open("POST", theUrl, true); // true for asynchronous
+			//Send it to the callback function..
+			if(callback){
+				callback(JSON.parse(xmlHttp.responseText));
+			}
+		}
+	}
+	xmlHttp.open("POST", theUrl, true); // true for asynchronous
 	xmlHttp.overrideMimeType('text/plain; charset=UTF-8');
-    //xmlHttp.setRequestHeader('Content-Type', 'application/json');
+	//xmlHttp.setRequestHeader('Content-Type', 'application/json');
 	xmlHttp.send(encodeURIComponent(params));
 	//xmlHttp.send(params);
 }
@@ -487,24 +513,24 @@ function httpPostAsyncPoll(theUrl, params, callback){
 	}
 
 	var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState == 4 && xmlHttp.status == 200){
+	xmlHttp.onreadystatechange = function() {
+		if (xmlHttp.readyState == 4 && xmlHttp.status == 200){
 			//Do we log it..
-        	if(MDS.logging){
-        		MDS.log("RESPONSE:"+xmlHttp.responseText);
-        	}
+			if(MDS.logging){
+				MDS.log("RESPONSE:"+xmlHttp.responseText);
+			}
 
-        	//Send it to the callback function..
-        	if(callback){
-        		callback(JSON.parse(xmlHttp.responseText));
-        	}
-        }
-    }
-    xmlHttp.addEventListener('error', function(ev){
+			//Send it to the callback function..
+			if(callback){
+				callback(JSON.parse(xmlHttp.responseText));
+			}
+		}
+	}
+	xmlHttp.addEventListener('error', function(ev){
 		MDS.log("Error Polling - reconnect in 10s");
 		setTimeout(function(){PollListener();},10000);
 	});
-    xmlHttp.open("POST", theUrl, true); // true for asynchronous
+	xmlHttp.open("POST", theUrl, true); // true for asynchronous
 	xmlHttp.overrideMimeType('text/plain; charset=UTF-8');
-    xmlHttp.send(encodeURIComponent(params));
+	xmlHttp.send(encodeURIComponent(params));
 }
