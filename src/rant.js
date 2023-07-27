@@ -23,7 +23,7 @@ function createMainTable(maxtime,callback){
 	});
 }
 
-function drawCompleteMainTable(thetable,allrows,callback){
+async function drawCompleteMainTable(thetable,allrows,callback){
 
 	//Get all the super chatters
 	selectAllSuperChatters(async function(superchatters){
@@ -31,7 +31,10 @@ function drawCompleteMainTable(thetable,allrows,callback){
 		for(var i=0;i<len;i++){
 			// var tablerow 	= thetable.insertRow(i);
 			// var cell1 	 	= tablerow.insertCell(0);
-			const row = await createMessageTable(allrows[i], superchatters, true);
+			const children = await selectChildMessages(allrows[i].MESSAGEID);
+			const reactions = await getReactions(children.rows);
+
+			const row = await createMessageTable(allrows[i], superchatters, true, 0, reactions);
 
 			if (row) {
 				document.getElementById('feed').innerHTML += row;
@@ -44,14 +47,18 @@ function drawCompleteMainTable(thetable,allrows,callback){
 	});
 }
 
-async function createMessageTable(messagerow, allsuperchatters, showactions, depth = 0){
+async function createMessageTable(messagerow, allsuperchatters, showactions, depth = 0, reactions = { show: false }){
 
 	//Sanitize and clean the input - allow our custom youtube tag
 	var dbmsg 		= decodeStringFromDB(messagerow.MESSAGE).replaceAll("\n","<br>");
-	var msg 		= DOMPurify.sanitize(dbmsg,{ ADD_TAGS: ["boost","youtube","spotify_track","spotify_podcast","spotify_artist","spotify_album","spotify_playlist"]});
+	var msg 		= DOMPurify.sanitize(dbmsg,{ ADD_TAGS: ["reaction","boost","youtube","spotify_track","spotify_podcast","spotify_artist","spotify_album","spotify_playlist"]});
 
 	if (msg.includes('<boost></boost>')) {
 		return null;
+	}
+
+	if (msg.includes('<reaction>')) {
+		return;
 	}
 
 	var parentid 	= DOMPurify.sanitize(messagerow.PARENTID+"");
@@ -171,6 +178,8 @@ async function createMessageTable(messagerow, allsuperchatters, showactions, dep
 		uid: uid,
 		depth,
 		isPosted,
+		showReactions: reactions.show,
+		...reactions,
 	});
 }
 
@@ -566,6 +575,23 @@ function addYoutubeVideo() {
 	document.getElementById('preview').style.display = 'block';
 }
 
+function requestBoost(msgid) {
+	var boostModal = document.getElementById('boost-modal');
+	var boostButton = document.getElementById('boost-post-button');
+
+	if (!SHOW_RE_CHATTER_WARNING) {
+		return boost(msgid);
+	}
+
+	boostButton.addEventListener('click', function() {
+		boost(msgid);
+	});
+
+	if (boostModal) {
+		boostModal.style.display = 'block';
+	}
+}
+
 function boost(msgid){
 	//Create the Chatter message
 	selectMessage(msgid, function(found,chatmsg){
@@ -584,6 +610,43 @@ function boost(msgid){
 
 				//And post over Maxima
 				postRant(rant)
+
+				if (document.getElementById('boost-warning-checkbox').checked) {
+					return setReChatterWarningToDisabled(function() {
+						//And reload the main table
+						document.location.href = "index.html?uid="+MDS.minidappuid;
+					});
+				}
+
+				//And reload the main table
+				document.location.href = "index.html?uid="+MDS.minidappuid;
+			});
+		});
+	});
+}
+
+function react(msgid, reaction, reloadOnThisPage = false){
+	//Create the Chatter message
+	selectMessage(msgid, function(found,chatmsg){
+
+		if(!found){
+			return;
+		}
+
+		//Get the baseid
+		baseid = chatmsg.BASEID;
+
+		createRant('<reaction>'+reaction+'</reaction>', msgid, null, function(rant){
+
+			//ok - now add this message to OUR DB
+			addRantToDB(rant,function(msg){
+
+				//And post over Maxima
+				postRant(rant);
+
+				if (reloadOnThisPage) {
+					return window.location.reload();
+				}
 
 				//And reload the main table
 				document.location.href = "index.html?uid="+MDS.minidappuid;
@@ -695,3 +758,67 @@ const openApp = (appName) => {
 	});
 }
 >>>>>>> Stashed changes
+
+function getReactions(messages){
+	const reactions = {
+		angry: 0,
+		sad: 0,
+		heart: 0,
+		shocked: 0,
+		thumbs_up: 0,
+		grinning_face: 0,
+		show: false,
+		sad_locked: false,
+		angry_locked: false,
+		heart_locked: false,
+		shocked_locked: false,
+		thumbs_up_locked: false,
+		grinning_face_locked: false,
+	};
+
+	for (const messagerow of messages) {
+		const message = messagerow.MESSAGE;
+		const dbmsg = decodeStringFromDB(message).replaceAll("\n","<br>");
+		const msg = DOMPurify.sanitize(dbmsg,{ ADD_TAGS: ["reaction","boost","youtube","spotify_track","spotify_podcast","spotify_artist","spotify_album","spotify_playlist"]});
+
+		if (msg.includes('<reaction>sad</reaction>')) {
+			reactions['sad'] += 1;
+			if (MAXIMA_PUBLICKEY === messagerow.PUBLICKEY) {
+				reactions['sad_locked'] = true
+			}
+		} else if (msg.includes('<reaction>thumbs_up</reaction>')) {
+			reactions['thumbs_up'] += 1;
+			if (MAXIMA_PUBLICKEY === messagerow.PUBLICKEY) {
+				reactions['thumbs_up_locked'] = true
+			}
+		} else if (msg.includes('<reaction>shocked</reaction>')) {
+			reactions['shocked'] += 1;
+			if (MAXIMA_PUBLICKEY === messagerow.PUBLICKEY) {
+				reactions['shocked_locked'] = true
+			}
+		} else if (msg.includes('<reaction>heart</reaction>')) {
+			reactions['heart'] += 1;
+			if (MAXIMA_PUBLICKEY === messagerow.PUBLICKEY) {
+				reactions['heart_locked'] = true
+			}
+		} else if (msg.includes('<reaction>grinning_face</reaction>')) {
+			reactions['grinning_face'] += 1;
+			if (MAXIMA_PUBLICKEY === messagerow.PUBLICKEY) {
+				reactions['grinning_face_locked'] = true
+			}
+		} else if (msg.includes('<reaction>angry</reaction>')) {
+			reactions['angry'] += 1;
+			if (MAXIMA_PUBLICKEY === messagerow.PUBLICKEY) {
+				reactions['angry_locked'] = true
+			}
+		}
+	}
+
+	for (const reactionType in reactions) {
+		if (reactions[reactionType]) {
+			reactions['show'] = true;
+		}
+	}
+
+	return reactions;
+}
