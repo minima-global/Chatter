@@ -25,11 +25,11 @@ var MDS = {
 	logging : false,
 
 	//When debuggin you can hard set the Host and port
-	DEBUG_HOST : 'localhost',
-	DEBUG_PORT : 9003,
+	DEBUG_HOST : null,
+	DEBUG_PORT : -1,
 
 	//An allowed TEST Minidapp ID for SQL - can be overridden
-	DEBUG_MINIDAPPID : "0x9E652EDCF225A592E3B90FDD5420E3C1B677C46FBA5A298C4DAA08191FA8233B5FE5D4C73FA32A4D703BA5CEF5CEE63C93DC2A4D93E65EF7F1DD1B923B2EA9493E27F2661A35791BDD0B8B653229CEE9BB3466B41CEB662A3EAEFD61C607FF173A224F1F351965726B2FDD5B06B0F87FCDDC89069A16FF3D5260D5CD7FAA449A",
+	DEBUG_MINIDAPPID : "0x00",
 
 	/**
 	 * Minima Startup - with the callback function used for all Minima messages
@@ -123,6 +123,36 @@ var MDS = {
 	sql : function(command, callback){
 		//Send via POST
 		httpPostAsync(MDS.mainhost+"sql?"+"uid="+MDS.minidappuid, command, callback);
+	},
+
+	/**
+	 *  Simple GET and SET key value pairs that are saved persistently
+	 */
+	keypair : {
+
+		/**
+		 * GET a value
+		 */
+		get : function(key, callback){
+
+			//Create the single line
+			var commsline = "get&"+key;
+
+			//Send via POST
+			httpPostAsync(MDS.mainhost+"keypair?"+"uid="+MDS.minidappuid, commsline, callback);
+		},
+
+		/**
+		 * SET a value
+		 */
+		set : function(key, value, callback){
+
+			//Create the single line
+			var commsline = "set&"+key+"&"+value;
+
+			//Send via POST
+			httpPostAsync(MDS.mainhost+"keypair?"+"uid="+MDS.minidappuid, commsline, callback);
+		}
 	},
 
 	/**
