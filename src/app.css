@@ -858,10 +858,28 @@ html {
     bottom: 16px;
     width: 100%;
 }
-<<<<<<< Updated upstream
-=======
+
+.powered-by__tap,.powered-by__click {
+    margin-bottom: 52px;
+}
+
+.powered-by__tap {
+    display: block;
+}
+
+.powered-by__click {
+    display: none;
+}
 
 @media (min-width: 768px) {
+    .powered-by__tap {
+        display: none;
+    }
+
+    .powered-by__click {
+        display: block;
+    }
+
     .author-title {
         font-size: 20px;
         margin-left: 0;

@@ -16,7 +16,11 @@
 			<h1>Welcome to Chatter!</h1>
 			<p class="splash__textContent">Share ideas and media with your contacts.<br /> Peer-to-peer, encrypted and decentralised.</p>
 			<p class="splash__textContent">	No cookies or data harvesting, just freedom.</p>
-			<p class="powered-by">Powered by <strong>Maxima</strong></p>
+			<div class="powered-by">
+				<div class="powered-by__tap">Tap to continue</div>
+				<div class="powered-by__click">Click to continue</div>
+				<div>Powered by <strong>Maxima</strong></div>
+			</div>
 		</div>
 	</div>
 
@@ -53,8 +57,7 @@
 
 			<div id="invite-friends-browser" class="mt-6" style="display: none">
 				<div class="mb-5">The more the merrier, invite your friends to join...</div>
-				<textarea id="browser-share-textarea" rows="5" class="mb-5 intro__share-textarea">Join me on Chatter, a peer-to-peer social media app built on Minima. https://play.google.com/store/apps/details?id=com.minima.android&hl=en&gl=US&pli=1</textarea>
-				<button id="browser-share-button" onclick="copy(this)" class="button button--primary button--mx">Copy</button>
+				<button id="browser-share-button" onclick="copy(this)" class="button button--primary button--mx">Invite friends</button>
 			</div>
 		</div>
 
@@ -686,23 +689,23 @@
 
 	function copy() {
 		const input = document.createElement('textarea');
-		input.textContent = document.getElementById('browser-share-textarea').textContent;
+		input.textContent = 'Run a Minima node and join me on Chatter! https://minidapps.minima.global';
 		document.body.appendChild(input);
 		input.select();
 		document.execCommand('copy');
 		document.body.removeChild(input);
 
 		document.getElementById('browser-share-button').classList.add('button--outline');
-		document.getElementById('browser-share-button').textContent = 'Copied!';
+		document.getElementById('browser-share-button').textContent = 'Invite link copied';
 
 		setTimeout(() => {
 			document.getElementById('browser-share-button').classList.remove('button--outline');
-			document.getElementById('browser-share-button').textContent = 'Copy';
+			document.getElementById('browser-share-button').textContent = 'Invite friends';
 		}, 3000);
 	}
 
 	function shareInvite() {
-		Android.shareText('Join me on Chatter, a peer-to-peer social media app built on Minima. https://play.google.com/store/apps/details?id=com.minima.android&hl=en&gl=US&pli=1');
+		Android.shareText('Run a Minima node and join me on Chatter! https://play.google.com/store/apps/details?id=com.minima.android&hl=en&gl=US&pli=1');
 	}
 
 </script>
