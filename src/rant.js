@@ -10,6 +10,7 @@
 var MESSAGE_MAXTIME = 0;
 var MESSAGE_NUMBER  = 0;
 var VIEW_NUMBER  	= 25;
+var IS_MINIMA_BROWSER = window.navigator.userAgent.includes('Minima Browser');
 
 var __templates = {
 	feedItem: Handlebars.compile(document.getElementById("feed-item-template").innerHTML),
@@ -721,7 +722,6 @@ function getReactions(messages){
 
 const openApp = (appName) => {
 	MDS.dapplink(appName, function (msg) {
-		console.log(msg);
 		return window.open(`${MDS.filehost}${msg.uid}/index.html?uid=${msg.sessionid}`, '_blank');
 	});
 }

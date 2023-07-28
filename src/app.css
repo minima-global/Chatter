@@ -1063,9 +1063,43 @@ html {
     width: 100%;
 }
 
-.action {
+.mb-4 {
+    margin-bottom: 16px;
+}
+
+.mt-6 {
+    margin-top: 20px;
+}
+
+.mb-5 {
+    margin-bottom: 20px;
+}
+
+.intro {
     padding: 40px;
     color: white;
     text-align: center;
+    background: black;
+    margin-bottom: 8px;
 }
->>>>>>> Stashed changes
+
+@media (min-width: 768px) {
+    .intro {
+        margin-bottom: 40px;
+    }
+}
+
+.intro__title {
+    font-size: 20px;
+}
+
+.intro__share-textarea {
+    padding: 10px;
+    width: 100%;
+    max-width: 420px;
+    word-break: break-all;
+    background: var(--core-black-contrast);
+    font-size: 14px;
+    color: white;
+    border: 1px solid #7e7e7e;
+}

@@ -20,39 +20,44 @@
 		</div>
 	</div>
 
-	<div class="action">
-		<div>
-			<div>Looks like you're all alone here, noname.</div>
-
-			<div>
-				<div>Setup your profile, add some contacts, and then create your first post!</div>
-				<button onclick="openApp('MaxContacts')" class="button button--primary button--mx">Setup profile</button>
-			</div>
-
-			<div>
-				<div>Add some contacts, then create your first post!</div>
-				<button onclick="openApp('MaxContacts')" class="button button--primary button--mx">Add contacts</button>
-			</div>
-
-			<div>
-				<div>Create your first post</div>
-				<div>The more the merrier, invite your friends to join...</div>
-				<button class="button button--primary button--mx">Invite friends</button>
-
-				<div>
-					<textarea id="browser-share-textarea" rows="5" style="padding: 10px;width: 100%; max-width: 420px; word-break: break-all">Join me on Chatter, a peer-to-peer social media app built on Minima. https://play.google.com/store/apps/details?id=com.minima.android&hl=en&gl=US&pli=1</textarea>
-					<button id="browser-share-button" onclick="copy(this)" class="button button--primary button--mx">Copy</button>
-				</div>
-			</div>
-		</div>
-	</div>
-
 	<section id="header"></section>
 	<div class="mobile-only">
 
 		<section id="message-box" class="message-box-container"></section>
 		<div id="preview" class="preview" onclick="showPreview();" style="display: none;">Preview this post</div>
 		<section id="feed" class="feed"></section>
+
+		<div id="intro" class="intro" style="display: none">
+			<img alt="Chatter logo" class="mb-5" src="./icon.png" width="75" height="75" />
+			<div class="intro__title mb-5">Looks like you're all alone here<span class="name"></span>.</div>
+
+			<div id="setup-profile" style="display: none">
+				<div class="mb-5">Setup your profile, add some contacts, then create your first post!</div>
+				<button onclick="openApp('MaxContacts')" class="button button--primary button--mx">Setup profile</button>
+			</div>
+
+			<div id="add-contact" style="display: none">
+				<div class="mb-5">Add some contacts, then create your first post!</div>
+				<button onclick="openApp('MaxContacts')" class="button button--primary button--mx">Add contacts</button>
+			</div>
+
+			<div id="has-contacts" style="display: none">
+				<div class="mb-5">Create your first post</div>
+			</div>
+
+			<div id="invite-friends-android" class="mt-6" style="display: none">
+				<div class="mb-4">Create your first post</div>
+				<div class="mb-5">The more the merrier, invite your friends to join...</div>
+				<button onclick="shareInvite()" class="button button--primary button--mx">Invite friends</button>
+			</div>
+
+			<div id="invite-friends-browser" class="mt-6" style="display: none">
+				<div class="mb-5">The more the merrier, invite your friends to join...</div>
+				<textarea id="browser-share-textarea" rows="5" class="mb-5 intro__share-textarea">Join me on Chatter, a peer-to-peer social media app built on Minima. https://play.google.com/store/apps/details?id=com.minima.android&hl=en&gl=US&pli=1</textarea>
+				<button id="browser-share-button" onclick="copy(this)" class="button button--primary button--mx">Copy</button>
+			</div>
+		</div>
+
 		<section id="footer"></section>
 
 		<div id="re-chatter-modal" class="modal-container" style="display: none;">
@@ -510,7 +515,43 @@
 
 			//Init Chatter vars
 			initChatter(function(){
+				if (MAXIMA_USERNAME !== 'noname') {
+					document.querySelector('.name').textContent = ', ' + MAXIMA_USERNAME;
+				}
+
 				document.getElementById('header').innerHTML = templates.header({ username: MAXIMA_USERNAME });
+
+				/**
+				 * Shows intro section if there are no messages
+				 */
+				selectRecentMessages(maxtime, VIEW_NUMBER, function(msg) {
+					if (msg.count === 0) {
+						document.getElementById('intro').style.display = 'block';
+
+						// shows either android share menu or copy textarea for those using
+						// desktop or external browser
+						if (IS_MINIMA_BROWSER) {
+							document.getElementById('invite-friends-android').style.display = 'block';
+						} else {
+							document.getElementById('invite-friends-browser').style.display = 'block';
+						}
+
+						// display setup profile is user has not set thier maxima name
+						if (MAXIMA_USERNAME === 'noname') {
+							return document.getElementById('setup-profile').style.display = 'block';
+						}
+
+						// if user has no contacts, tell them to add contacts via maxcontacts
+						// else show, create your first post section
+						MDS.cmd('maxcontacts', function(msg) {
+							if (msg.response.contacts.length === 0) {
+								return document.getElementById('add-contact').style.display = 'block';
+							} else {
+								return document.getElementById('has-contacts').style.display = 'block';
+							}
+						})
+					}
+				})
 			});
 
 			//Load the table..
@@ -658,6 +699,10 @@
 			document.getElementById('browser-share-button').classList.remove('button--outline');
 			document.getElementById('browser-share-button').textContent = 'Copy';
 		}, 3000);
+	}
+
+	function shareInvite() {
+		Android.shareText('Join me on Chatter, a peer-to-peer social media app built on Minima. https://play.google.com/store/apps/details?id=com.minima.android&hl=en&gl=US&pli=1');
 	}
 
 </script>
