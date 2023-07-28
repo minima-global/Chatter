@@ -52,12 +52,13 @@
 			<div id="invite-friends-android" class="mt-6" style="display: none">
 				<div class="mb-4">Create your first post</div>
 				<div class="mb-5">The more the merrier, invite your friends to join...</div>
-				<button onclick="shareInvite()" class="button button--primary button--mx">Invite friends</button>
+				<button onclick="shareInvite()" class="button button--primary button--mx">Invite</button>
 			</div>
 
 			<div id="invite-friends-browser" class="mt-6" style="display: none">
+				<div class="mb-4">Create your first post</div>
 				<div class="mb-5">The more the merrier, invite your friends to join...</div>
-				<button id="browser-share-button" onclick="copy(this)" class="button button--primary button--mx">Invite friends</button>
+				<button id="browser-share-button" onclick="copy(this)" class="button button--primary button--mx">Invite</button>
 			</div>
 		</div>
 
@@ -689,7 +690,7 @@
 
 	function copy() {
 		const input = document.createElement('textarea');
-		input.textContent = 'Run a Minima node and join me on Chatter! https://minidapps.minima.global';
+		input.textContent = 'Run a Minima node and join me on Chatter! https://www.minima.global/run-a-node';
 		document.body.appendChild(input);
 		input.select();
 		document.execCommand('copy');
@@ -700,7 +701,7 @@
 
 		setTimeout(() => {
 			document.getElementById('browser-share-button').classList.remove('button--outline');
-			document.getElementById('browser-share-button').textContent = 'Invite friends';
+			document.getElementById('browser-share-button').textContent = 'Invite';
 		}, 3000);
 	}
 
