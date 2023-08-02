@@ -74,14 +74,26 @@ html {
     user-select: none;
 }
 
-.message-box {
-    background: var(--core-black-contrast);
+.message-box, .message-box__item, .media-box, .actions {
+    background: var(--core-black-contrast-2) !important;
 }
 
 .media-box {
     width: 100%;
     text-align: center;
+    color: #BDBDC4;
     background: var(--core-black-contrast);
+}
+
+.actions__left .media-box-button:first-child {
+    margin-left: -6px;
+}
+
+.media-box-button {
+    background: none;
+    border: 0;
+    cursor: pointer;
+    padding: 0 5px;
 }
 
 @media (min-width: 578px) {
@@ -105,22 +117,28 @@ html {
     height: fit-content;
     color: var(--white);
     background: var(--core-black-contrast);
-    padding: 20px;
+    padding: 24px 20px;
     border: 0;
-    width: 100%;
     resize: none;
-    min-height: 50px;
     max-height: 150px;
     margin-bottom: 0;
     outline: none;
 }
 
+.message-box__item::placeholder {
+    color: #BDBDC4;
+}
+
 .actions {
     display: flex;
-    padding: 10px;
+    padding: 20px;
     justify-content: flex-end;
     gap: 10px;
     background: var(--core-black-contrast);
+}
+
+.actions__left {
+    flex: 1 1 auto;
 }
 
 .button {
@@ -143,10 +161,6 @@ html {
 
 .button:disabled {
     opacity: 0.5;
-}
-
-.button svg {
-    margin-right: 10px;
 }
 
 .button--icon {
@@ -292,7 +306,7 @@ html {
 
 .feed-item__content {
     color: var(--text-grey);
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 .feed-item__content-text {
@@ -351,15 +365,18 @@ html {
     cursor: pointer;
     color: var(--primary-color);
     margin-top: 15px;
+    font-size: 14px;
 }
 
 .feed-item__actions {
     display: flex;
+    padding-top: 14px;
 }
 
 .feed-item__actions-right {
     display: flex;
     gap: 15px;
+    align-items: center;
     justify-content: flex-end;
 }
 
@@ -514,6 +531,10 @@ html {
 /** misc **/
 .button--min {
     width: 108px;
+}
+
+.button--fs-sm {
+    font-size: 14px;
 }
 
 .feed {
@@ -1120,4 +1141,19 @@ html {
     font-size: 14px;
     color: white;
     border: 1px solid #7e7e7e;
+}
+
+.message-box-hr {
+    padding: 0 20px;
+    background: var(--core-black-contrast-2);
+}
+
+.hr {
+    background: #464C4F;
+    height: 1px;
+    margin: 0 auto;
+}
+
+.feed-item__actions-right svg {
+    margin-right: 10px;
 }
