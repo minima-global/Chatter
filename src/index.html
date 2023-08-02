@@ -654,6 +654,9 @@
 
 				//And reload the main table
 				createMainTable(maxtime,function(){
+					document.getElementById('intro').style.display = 'none';
+					document.getElementById('preview').style.display = 'none';
+
 					//Check we found any..
 					if(MESSAGE_MAXTIME == 0){
 						document.getElementById("nextbutton").style.display = "none";

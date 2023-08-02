@@ -113,7 +113,7 @@ html {
 
 .message-box__item {
     width: 100%;
-    min-height: 50px;
+    min-height: 85px;
     height: fit-content;
     color: var(--white);
     background: var(--core-black-contrast);
@@ -1107,7 +1107,7 @@ html {
 }
 
 .mt-6 {
-    margin-top: 20px;
+    margin-top: 40px;
 }
 
 .mb-5 {
