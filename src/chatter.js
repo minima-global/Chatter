@@ -477,6 +477,15 @@ function checkInDB(msgid,callback){
 	});
 }
 
+function updateRecDate(msgid,date,callback){
+	MDS.sql("UPDATE MESSAGES SET recdate = '"+date+"' WHERE messageid='"+msgid+"'", function(sqlmsg){
+		MDS.log(sqlmsg);
+		if (callback) {
+			callback(sqlmsg.count>0);
+		}
+	});
+}
+
 function encodeStringForDB(str){
 	return encodeURIComponent(str).split("'").join("%27");
 	//return encodeURIComponent(str).replaceAll("'", "%27");

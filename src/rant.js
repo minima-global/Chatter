@@ -609,18 +609,25 @@ function boost(msgid){
 			//ok - now add this message to OUR DB
 			addRantToDB(rant,function(msg){
 
-				//And post over Maxima
-				postRant(rant)
+				rant.boost = true;
 
-				if (document.getElementById('boost-warning-checkbox').checked) {
-					return setReChatterWarningToDisabled(function() {
+				//And post over Maxima
+				postRant(rant, function() {
+					var now = new Date();
+					var recdate = now.getTime();
+
+					updateRecDate(msgid, recdate, function() {
+						if (document.getElementById('boost-warning-checkbox').checked) {
+							return setReChatterWarningToDisabled(function() {
+								//And reload the main table
+								document.location.href = "index.html?uid="+MDS.minidappuid;
+							});
+						}
+
 						//And reload the main table
 						document.location.href = "index.html?uid="+MDS.minidappuid;
 					});
-				}
-
-				//And reload the main table
-				document.location.href = "index.html?uid="+MDS.minidappuid;
+				});
 			});
 		});
 	});
@@ -642,15 +649,22 @@ function react(msgid, reaction, reloadOnThisPage = false){
 			//ok - now add this message to OUR DB
 			addRantToDB(rant,function(msg){
 
+				rant.reaction = true;
+
 				//And post over Maxima
-				postRant(rant);
+				postRant(rant, function() {
+					var now = new Date();
+					var recdate = now.getTime();
 
-				if (reloadOnThisPage) {
-					return window.location.reload();
-				}
+					updateRecDate(msgid, recdate, function() {
+						if (reloadOnThisPage) {
+							return window.location.reload();
+						}
 
-				//And reload the main table
-				document.location.href = "index.html?uid="+MDS.minidappuid;
+						//And reload the main table
+						document.location.href = "index.html?uid="+MDS.minidappuid;
+					});
+				});
 			});
 		});
 	});
