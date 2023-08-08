@@ -1,5 +1,15 @@
 # Changelog
 
+##### [1.6.0] - 08 August 23
+
+- Minor text changes
+- Added new emoji's
+- Added boost count
+
+##### [1.5.2] - 07 August 23
+
+- Boosting a post will now move the post to the top of the thread
+
 ##### [1.4.3] - 03 August 23
 
 - Fixed reply functionality
