@@ -714,6 +714,7 @@ html {
     transform: scale(0);
     visibility: hidden;
     transition: 0.15s all;
+    transform-origin: top left;
     align-items: center;
     position: absolute;
     flex-direction: row;
@@ -726,20 +727,24 @@ html {
     display: flex;
     padding: 12px;
     gap: 12px;
-    left: -20px;
     position: absolute;
     flex-direction: row;
     align-items: center;
-    border-radius: 3px;
+    border-radius: 30px;
     --tw-backdrop-blur: blur(8px);
     backdrop-filter: var(--tw-backdrop-blur);
     box-shadow: var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow);
+    flex-wrap: wrap;
+    margin-left: 90px;
 }
 
-@media (min-width: 768px) {
-    .react__reactions {
-        left: -120px;
-    }
+.react_rocket {
+    width: 28px;
+    height: 28px;
+    display: block;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url('./reactions/rocket_3d.png');
 }
 
 .react_thumbs_up {
@@ -750,6 +755,7 @@ html {
     background-position: center;
     background-image: url('./reactions/thumbs_up_3d_default.png');
 }
+
 
 .react_heart {
     width: 28px;
@@ -931,22 +937,20 @@ html {
 }
 
 .react__container {
-    transform: scale(0);
-    visibility: hidden;
     transition: 0.15s all;
     align-items: center;
     position: absolute;
     flex-direction: row;
-    width: fit-content;
+    width: 300px;
     z-index: 50;
-    padding-top: 40px;
+    top: 0;
+    left: 0;
 }
 
 .react__reactions {
     display: flex;
     padding: 12px;
     gap: 12px;
-    left: -20px;
     position: absolute;
     flex-direction: row;
     align-items: center;
@@ -954,12 +958,8 @@ html {
     --tw-backdrop-blur: blur(8px);
     backdrop-filter: var(--tw-backdrop-blur);
     box-shadow: var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow);
-}
-
-@media (min-width: 768px) {
-    .react__reactions {
-        left: -120px;
-    }
+    width: 100%;
+    margin-left: -50px;
 }
 
 .react_thumbs_up {
@@ -1010,6 +1010,94 @@ html {
     background-image: url('./reactions/face_with_symbols_on_mouth_3d.png');
 }
 
+.react_joy {
+    width: 28px;
+    height: 28px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url('./reactions/joy_3d.png');
+}
+
+.react_fire {
+    width: 28px;
+    height: 28px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url('./reactions/fire_3d.png');
+}
+
+.react_muscle {
+    width: 28px;
+    height: 28px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url('./reactions/muscle_3d.png');
+}
+
+.react_facepalm {
+    width: 28px;
+    height: 28px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url('./reactions/facepalm_3d.png');
+}
+
+.react_facepalm {
+    width: 28px;
+    height: 28px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url('./reactions/facepalm_3d.png');
+}
+
+.react_cool {
+    width: 28px;
+    height: 28px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url('./reactions/face_with_sunglasses_3d.png');
+}
+
+.react_celebrate {
+    width: 28px;
+    height: 28px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url('./reactions/celebrate_3d.png');
+}
+
+.react_pray {
+    width: 28px;
+    height: 28px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url('./reactions/pray_3d.png');
+}
+
+.react_minima {
+    width: 28px;
+    height: 28px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url('./reactions/minima.png');
+}
+
+.react_joy {
+    width: 28px;
+    height: 28px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url('./reactions/joy_3d.png');
+}
+
+.react_joy {
+    width: 28px;
+    height: 28px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url('./reactions/joy_3d.png');
+}
+
 .react-reaction {
     border: 0;
     background-color: transparent;
@@ -1038,6 +1126,7 @@ html {
     color: white;
     display: flex;
     gap: 20px;
+    flex-wrap: wrap;
 }
 
 .feed-item-reaction__item .react-reaction {

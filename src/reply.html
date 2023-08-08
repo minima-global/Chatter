@@ -289,6 +289,14 @@
 										<button onclick="react('{{ messageId }}', 'sad')" {{#if sad_locked}}disabled{{/if}} class="react-reaction react_sad"></button>
 										<button onclick="react('{{ messageId }}', 'shocked')" {{#if shocked_locked}}disabled{{/if}} class="react-reaction react_shocked"></button>
 										<button onclick="react('{{ messageId }}', 'angry')" {{#if angry_locked}}disabled{{/if}} class="react-reaction react_angry"></button>
+										<button onclick="react('{{ messageId }}', 'joy')" {{#if joy_locked}}disabled{{/if}} class="react-reaction react_joy"></button>
+										<button onclick="react('{{ messageId }}', 'muscle')" {{#if muscle_locked}}disabled{{/if}} class="react-reaction react_muscle"></button>
+										<button onclick="react('{{ messageId }}', 'pray')" {{#if pray_locked}}disabled{{/if}} class="react-reaction react_pray"></button>
+										<button onclick="react('{{ messageId }}', 'fire')" {{#if fire_locked}}disabled{{/if}} class="react-reaction react_fire"></button>
+										<button onclick="react('{{ messageId }}', 'facepalm')" {{#if facepalm_locked}}disabled{{/if}} class="react-reaction react_facepalm"></button>
+										<button onclick="react('{{ messageId }}', 'celebrate')" {{#if celebrate_locked}}disabled{{/if}} class="react-reaction react_celebrate"></button>
+										<button onclick="react('{{ messageId }}', 'cool')" {{#if cool_locked}}disabled{{/if}} class="react-reaction react_cool"></button>
+										<button onclick="react('{{ messageId }}', 'minima')" {{#if minima_locked}}disabled{{/if}} class="react-reaction react_minima"></button>
 									</div>
 								</div>
 							</div>
@@ -313,6 +321,12 @@
 			</div>
 		{{#if showReactions }}
 			<div class="feed-item-reaction">
+				{{#if boost }}
+					<div class="feed-item-reaction__item">
+						<div class="react-reaction react_rocket"></div>
+						{{boost}}
+					</div>
+				{{/if }}
 				{{#if thumbs_up }}
 					<div class="feed-item-reaction__item">
 						<div class="react-reaction react_thumbs_up"></div>
@@ -349,9 +363,56 @@
 						{{shocked}}
 					</div>
 				{{/if }}
+				{{#if joy }}
+					<div class="feed-item-reaction__item">
+						<div class="react-reaction react_joy"></div>
+						{{joy}}
+					</div>
+				{{/if }}
+				{{#if celebrate }}
+					<div class="feed-item-reaction__item">
+						<div class="react-reaction react_celebrate"></div>
+						{{celebrate}}
+					</div>
+				{{/if }}
+				{{#if fire }}
+					<div class="feed-item-reaction__item">
+						<div class="react-reaction react_fire"></div>
+						{{fire}}
+					</div>
+				{{/if }}
+				{{#if facepalm }}
+					<div class="feed-item-reaction__item">
+						<div class="react-reaction react_facepalm"></div>
+						{{facepalm}}
+					</div>
+				{{/if }}
+				{{#if cool }}
+					<div class="feed-item-reaction__item">
+						<div class="react-reaction react_cool"></div>
+						{{cool}}
+					</div>
+				{{/if }}
+				{{#if muscle }}
+					<div class="feed-item-reaction__item">
+						<div class="react-reaction react_muscle"></div>
+						{{muscle}}
+					</div>
+				{{/if }}
+				{{#if pray }}
+					<div class="feed-item-reaction__item">
+						<div class="react-reaction react_pray"></div>
+						{{pray}}
+					</div>
+				{{/if }}
+				{{#if minima }}
+					<div class="feed-item-reaction__item">
+						<div class="react-reaction react_minima"></div>
+						{{minima}}
+					</div>
+				{{/if }}
 			</div>
 		{{/if}}
-		</div>
 	</script>
 
 	<script type="text/javascript" src="moment.js"></script>
