@@ -13,6 +13,7 @@ var VIEW_NUMBER  	= 25;
 var IS_MINIMA_BROWSER = window.navigator.userAgent.includes('Minima Browser');
 var NODE_ADDRESS = '';
 var IS_WRITE_MODE = false;
+var IS_LOCKED = false;
 
 var __templates = {
 	feedItem: Handlebars.compile(document.getElementById("feed-item-template").innerHTML),
@@ -849,7 +850,7 @@ const resetTipUI = () => {
 	}
 
 	if (tipAmount) {
-		tipAmount.addEventListener('keyup', function(evt) {
+		tipAmount.addEventListener('keyup', function() {
 			const amount = document.getElementById('tip__amount').value;
 			const nodeAddress = document.getElementById('tip__node-address').value;
 			const nodePassword = document.getElementById('tip__node-password').value;
@@ -859,7 +860,7 @@ const resetTipUI = () => {
 				return;
 			}
 
-			if (IS_WRITE_MODE === false && nodePassword === '') {
+			if (IS_LOCKED === true && nodePassword === '') {
 				return;
 			}
 
@@ -881,7 +882,7 @@ const resetTipUI = () => {
 				return;
 			}
 
-			if (IS_WRITE_MODE === false && nodePassword === '') {
+			if (IS_LOCKED === true && nodePassword === '') {
 				return;
 			}
 

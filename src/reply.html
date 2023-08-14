@@ -518,6 +518,7 @@
 				// Check if node is locked for the tip node password
 				isLocked(function (locked) {
 					if (locked) {
+						IS_LOCKED = true;
 						document.getElementById('tip__node-locked').style.display = 'block';
 					}
 				});
