@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Group 3</title>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-3" transform="translate(2.000000, 2.000000)">
+            <g id="transfer-circle" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5">
+                <circle id="Oval" cx="10" cy="10" r="10"></circle>
+            </g>
+            <g id="Transfer:transaction5" transform="translate(5.554016, 5.554016)" fill="#FFFFFF" fill-rule="nonzero">
+                <g id="Group">
+                    <path d="M6.66897583,2.22299194 L2.22299194,2.22299194 L0,0 L8.89196777,0 L8.89196777,8.89196777 L6.66897583,6.66897583 L6.66897583,2.22299194 Z" id="Combined-Shape"></path>
+                </g>
+                <rect id="Rectangle" x="0" y="4.44598389" width="4.44598389" height="4.44598389"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

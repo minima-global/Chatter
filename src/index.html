@@ -27,6 +27,43 @@
 	<section id="header"></section>
 	<div class="mobile-only">
 
+		<div id="tip__modal" class="tip-modal">
+			<div class="tip-modal__shell">
+				<form id="tip__form" class="tip__form" method="POST" style="display: block;">
+					<img src="./assets/transfer-circle.svg" alt="Transfer" width="36" class="mb-5" />
+					<h3 class="tip__title mb-5">Tip <span id="tip__name"></span></h3>
+					<p class="mb-7 text-secondary-grey">Enter a tip amount.</p>
+					<div class="position-relative mb-3">
+						<label><input id="tip__amount" class="tip__input mb-3" type="number" placeholder="Amount" min="0.00000001" /></label>
+						<img src="./reactions/minima.png" class="tip__minima_icon" alt="Minima icon" />
+					</div>
+					<input id="tip__node-address" type="hidden" readOnly />
+					<div id="tip__node-locked" class="position-relative mb-3" style="display: none;">
+						<label><input id="tip__node-password" type="password" class="tip__input mb-4" placeholder="Node password" min="0.00000001" /></label>
+						<img id="password-is-hidden" src="./assets/eye-off.svg" class="tip__tip_icon" alt="Password is hidden" />
+					</div>
+					<button id="tip__submit" class="button button--taller button--primary w-full mb-2" type="submit" disabled>Tip</button>
+					<button id="tip__open-wallet" class="button button--taller button--outline w-full mt-4 mb-2 tip__dismiss" onClick="openWallet()" type="button" style="display: none">
+						<img src="./assets/wallet.png" width="18" height="18" alt="Wallet" />Open Wallet
+					</button>
+					<button class="button button--taller w-full tip__dismiss">Cancel</button>
+				</form>
+				<div id="tip__success-pending" style="display: none;">
+					<img src="./assets/alert-circle.svg" alt="Pending" width="32" class="mb-5" />
+					<h3 class="tip__title mb-6">Transaction is pending!</h3>
+					<p class="text-secondary-grey mb-7">Please open the pending app and accept the transaction.</p>
+					<button class="button button--tall button--primary w-full tip__dismiss mb-4">Ok</button>
+				</div>
+				<div id="tip__success-no-confirmation" style="display: none;">
+					<img src="./assets/check-circle.svg" alt="Success" width="32" class="mb-5" />
+					<h3 class="tip__title mb-6">Transaction has been sent</h3>
+					<p class="text-secondary-grey mb-7">The user should receive their tip shortly.</p>
+					<button class="button button--tall button--primary w-full mb-4 tip__dismiss">Cancel</button>
+				</div>
+			</div>
+			<div class="frosted"></div>
+		</div>
+
 		<section id="message-box" class="message-box-container"></section>
 		<div id="preview" class="preview" onclick="showPreview();" style="display: none;">Preview this post</div>
 		<section id="feed" class="feed"></section>
@@ -131,7 +168,7 @@
 			<div class="modal">
 				<div class="modal-body">
 					<div class="modal__content">
-						Paste the whole youtube link below.
+						Paste the whole YouTube link below.
 						<input id="youtube-url" type="text" class="url-input" />
 					</div>
 					<div class="modal__actions">
@@ -147,7 +184,7 @@
 			<div class="modal">
 				<div class="modal-body">
 					<div class="modal__content">
-						Paste the whole spotify track link below.
+						Paste the whole Spotify track link below.
 						<input id="spoitfy-track-url" type="text" class="url-input" />
 					</div>
 					<div class="modal__actions">
@@ -377,6 +414,27 @@
 				</div>
 				<div class="feed-item__actions-right">
 					{{#if isPosted}}
+						{{#if hasNodeAddress }}
+							<button class="button button--no-padding button--fs-sm mr-1" onClick="openTipModal('{{nodeAddress}}', '{{ username }}')">
+								<svg width="21px" height="22px" viewBox="0 0 21 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+									<g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+										<g id="Group-2" transform="translate(0.995066, 1.643503)">
+											<g id="Transfer:transaction5" transform="translate(5.543264, 5.543264)" fill="#FFFFFF" fill-rule="nonzero">
+												<g id="Group">
+													<polygon id="Path" points="6.00018311 0 2.00006104 0 2.00006104 2.00006104 6.00018311 2.00006104 6.00018311 6.00018311 8.00024414 6.00018311 8.00024414 6.00018311 8.00024414 2.00006104 8.00024414 0"></polygon>
+													<path d="M8.00024414,6.00018311 L8.00024414,8.00024414 L6.00018311,6.00018311 L8.00024414,6.00018311 Z M2.00006104,0 L2.00006104,2.00006104 L0,0 L2.00006104,0 Z" id="Combined-Shape"></path>
+												</g>
+												<rect id="Rectangle" x="0" y="4.00012207" width="4.00012207" height="4.00012207"></rect>
+											</g>
+											<g id="transfer-circle" transform="translate(-0.000000, -0.000000)" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6">
+												<circle id="Oval" cx="9.54338626" cy="9.54338626" r="9.54338626"></circle>
+											</g>
+										</g>
+									</g>
+								</svg>
+								Tip
+							</button>
+						{{/if}}
 						<a href="reply.html?uid={{ uid }}&msgid={{ messageId }}">
 						<button class="button button--no-padding button--fs-sm">
 							<svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -555,6 +613,34 @@
 		//Do initialisation
 		if(msg.event == "inited"){
 
+			// Check if app is in write mode
+			isWriteMode(function (mode) {
+				if (mode === 'WRITE') {
+					IS_WRITE_MODE = true;
+				}
+			});
+
+			// Check if app can open the wallet app
+			dappLink('Wallet', function (msg) {
+				if (msg.status) {
+					document.getElementById('tip__open-wallet').style.display = 'flex';
+				}
+			});
+
+			// Check if node is locked for the tip node password
+			isLocked(function (locked) {
+				if (locked) {
+					document.getElementById('tip__node-locked').style.display = 'block';
+				}
+			});
+
+			// Get max amount for the tip amount
+			getMaxAmount();
+
+			MDS.cmd('getaddress', function(msg) {
+				NODE_ADDRESS = msg.response.miniaddress;
+			})
+
 			/**
 			 * Checks to see if splash should be shown
 			 */
@@ -649,6 +735,8 @@
 					createMainTable(maxtime);
 				}
 			}
+		} else if (msg.event == 'NEWBALANCE') {
+			getMaxAmount();
 		}
 	});
 
@@ -717,13 +805,15 @@
 		// hide preview under start chat box
 		document.getElementById('preview').style.display = 'none';
 
+		text += ` <node_address>${NODE_ADDRESS}</node_address>`;
+
 		createRant(text,"0x00","0x00",function(rant){
 
 			//ok - now add this message to OUR DB
 			addRantToDB(rant,function(msg){
 
 				//And post over Maxima
-				postRant(rant)
+				postRant(rant);
 
 				//And reload the main table
 				createMainTable(maxtime,function(){

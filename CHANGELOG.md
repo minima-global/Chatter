@@ -1,5 +1,11 @@
 # Changelog
 
+##### [1.7.0] - 14 August 23
+
+- You can now tip another user
+  - Tipping is limited to posts that have been posted with Chatter builds > 1.7.0
+  - You can open the Wallet app to tip if the Wallet app has the same permission level as Chatter
+
 ##### [1.6.0] - 08 August 23
 
 - Minor text changes

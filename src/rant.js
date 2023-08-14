@@ -11,6 +11,8 @@ var MESSAGE_MAXTIME = 0;
 var MESSAGE_NUMBER  = 0;
 var VIEW_NUMBER  	= 25;
 var IS_MINIMA_BROWSER = window.navigator.userAgent.includes('Minima Browser');
+var NODE_ADDRESS = '';
+var IS_WRITE_MODE = false;
 
 var __templates = {
 	feedItem: Handlebars.compile(document.getElementById("feed-item-template").innerHTML),
@@ -52,7 +54,10 @@ async function createMessageTable(messagerow, allsuperchatters, showactions, dep
 
 	//Sanitize and clean the input - allow our custom youtube tag
 	var dbmsg 		= decodeStringFromDB(messagerow.MESSAGE).replaceAll("\n","<br>");
-	var msg 		= DOMPurify.sanitize(dbmsg,{ ADD_TAGS: ["reaction","boost","youtube","spotify_track","spotify_podcast","spotify_artist","spotify_album","spotify_playlist"]});
+	var msg 		= DOMPurify.sanitize(dbmsg,{
+		KEEP_CONTENT: false,
+		ADD_TAGS: ["node_address", "reaction","boost","youtube","spotify_track","spotify_podcast","spotify_artist","spotify_album","spotify_playlist"],
+	});
 
 	if (msg.includes('<boost></boost>')) {
 		return null;
@@ -164,10 +169,24 @@ async function createMessageTable(messagerow, allsuperchatters, showactions, dep
 	messageConverted = convertSpotify("playlist",messageConverted);
 	messageConverted = convertSpotifyPodcast(messageConverted);
 
+	/**
+	 * We check to see if the message has a <node_address>, if it does, we want
+	 * to strip it out of the message
+	 */
+	let hasNodeAddress = false;
+	let nodeAddress = false;
+	const nodeAddressResult = convertNodeAddress(messageConverted);
+
+	if (nodeAddressResult.result) {
+		hasNodeAddress = true;
+		nodeAddress = nodeAddressResult.nodeAddress;
+		messageConverted = nodeAddressResult.message;
+	}
+
 	return __templates.feedItem({
 		username: usernameorig,
 		messageId: messageid,
-		message: messageConverted,
+		message: DOMPurify.sanitize(messageConverted),
 		postedAt: datestr,
 		prettyPostedAt: prettyPostedAt,
 		replyTo: replyTo,
@@ -180,7 +199,9 @@ async function createMessageTable(messagerow, allsuperchatters, showactions, dep
 		depth,
 		isPosted,
 		showReactions: reactions.show,
+		hasNodeAddress,
 		...reactions,
+		nodeAddress,
 	});
 }
 
@@ -328,6 +349,19 @@ function convertSpotifyPodcast(msg){
 		+"fullscreen; picture-in-picture' loading='lazy'></iframe>");
 
 	return actual;
+}
+
+/**
+ * Works with track,artist,album,playlist
+ */
+function convertNodeAddress(msg){
+	const matcher = msg.match(/(?<=<node_address>)(.*?)(?=<\/node_address>)/gmi);
+
+	return {
+		nodeAddress: matcher ? matcher[0] : null,
+		message: msg.replace(/<node_address>[a-z|0-9]+<\/node_address>/gmi, ''),
+		result: /<node_address>[a-z|0-9]+<\/node_address>/gmi.test(msg),
+	}
 }
 
 /**
@@ -742,3 +776,136 @@ const openApp = (appName) => {
 		return window.open(`${MDS.filehost}${msg.uid}/index.html?uid=${msg.sessionid}`, '_blank');
 	});
 }
+
+const openTipModal = (nodeAddress, username) => {
+	document.getElementById('tip__name').textContent = username;
+	document.getElementById('tip__modal').style.display = 'flex';
+	document.getElementById('tip__node-address').value = nodeAddress;
+}
+
+const resetTipUI = () => {
+	document.getElementById('tip__name').textContent = '';
+	document.getElementById('tip__node-address').value = '';
+	document.getElementById('tip__amount').value = '';
+	document.getElementById('tip__submit').disabled = true;
+	document.getElementById('tip__form').style.display = 'block';
+	document.getElementById('tip__node-password').value = '';
+	document.getElementById('tip__success-pending').style.display = 'none';
+	document.getElementById('tip__success-no-confirmation').style.display = 'none';
+	document.getElementById('password-is-hidden').type = 'password';
+	document.getElementById('password-is-hidden').value = '';
+};
+
+(function () {
+	document.querySelectorAll('.tip__dismiss').forEach((item) => {
+		item.addEventListener('click', function() {
+			resetTipUI();
+			document.getElementById('tip__modal').style.display = 'none';
+		});
+	});
+
+	const tipForm = document.getElementById('tip__form');
+	const tipAmount = document.getElementById('tip__amount');
+	const passwordIsHidden = document.getElementById('password-is-hidden');
+	const nodePassword = document.getElementById('tip__node-password');
+
+	if (passwordIsHidden) {
+		passwordIsHidden.addEventListener('click', function() {
+			nodePassword.type = nodePassword.type === 'password' ? 'text' : 'password';
+			passwordIsHidden.src = nodePassword.type === 'password' ? './assets/eye-off.svg' : './assets/eye.svg';
+		});
+	}
+	if (tipForm) {
+		tipForm.addEventListener('submit', function(evt) {
+			evt.preventDefault();
+
+			const nodeAddress = document.getElementById('tip__node-address').value;
+			const amount = document.getElementById('tip__amount').value;
+			const nodePassword = document.getElementById('tip__node-password').value;
+
+			let transactionPassword = '';
+
+			if (nodeAddress === '' || !nodeAddress.includes('Mx') || amount === '') {
+				return '';
+			}
+
+			if (nodePassword !== '') {
+				transactionPassword += ` password:${nodePassword}`;
+			}
+
+			document.getElementById('tip__submit').disabled = true;
+
+			MDS.cmd(`send amount:${amount} tokenid:0x00 address:${nodeAddress}${transactionPassword}`, function () {
+				resetTipUI();
+				document.getElementById('tip__form').style.display = 'none';
+
+				if (IS_WRITE_MODE) {
+					return document.getElementById('tip__success-no-confirmation').style.display = 'block';
+				}
+
+				return document.getElementById('tip__success-pending').style.display = 'block';
+			});
+		});
+	}
+
+	if (tipAmount) {
+		tipAmount.addEventListener('keyup', function(evt) {
+			const amount = document.getElementById('tip__amount').value;
+			const nodeAddress = document.getElementById('tip__node-address').value;
+			const nodePassword = document.getElementById('tip__node-password').value;
+
+			if (nodeAddress === '' || !nodeAddress.includes('Mx') || amount === '') {
+				document.getElementById('tip__submit').disabled = true;
+				return;
+			}
+
+			if (IS_WRITE_MODE === false && nodePassword === '') {
+				return;
+			}
+
+			return document.getElementById('tip__submit').disabled = false;
+		});
+	}
+
+	/***
+	 *
+	 */
+	if (nodePassword) {
+		nodePassword.addEventListener('keyup', function() {
+			const amount = document.getElementById('tip__amount').value;
+			const nodeAddress = document.getElementById('tip__node-address').value;
+			const nodePassword = document.getElementById('tip__node-password').value;
+
+			if (nodeAddress === '' || !nodeAddress.includes('Mx') || amount === '') {
+				document.getElementById('tip__submit').disabled = true;
+				return;
+			}
+
+			if (IS_WRITE_MODE === false && nodePassword === '') {
+				return;
+			}
+
+			return document.getElementById('tip__submit').disabled = false;
+		});
+	}
+})();
+
+
+function openWallet() {
+	const nodeAddress = document.getElementById('tip__node-address').value;
+	const amount = document.getElementById('tip__amount').value;
+	const amountArg = amount !== '' ? `&amount=${amount}` : '';
+
+	dappLink('Wallet', function (msg) {
+		window.open(`${msg.base}#/send?tokenid=0x00&address=${nodeAddress}${amountArg}`);
+	});
+}
+
+const getMaxAmount = () => {
+	balance(function (balance) {
+		const maxAmount = Number(Number(balance[0].sendable).toFixed(0));
+		const balanceText = `Amount (Max: ${maxAmount})`;
+		document.getElementById('tip__amount').placeholder = balanceText;
+		document.getElementById('tip__amount').max = maxAmount;
+	});
+};

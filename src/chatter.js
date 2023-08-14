@@ -640,3 +640,28 @@ function setBoostWarningToDisabled(callback) {
 		MDS.sql(query, callback);
 	});
 }
+
+function isWriteMode(callback) {
+	MDS.cmd('checkmode', function(msg) {
+		callback(msg.response.mode);
+	})
+}
+
+function isLocked(callback) {
+	MDS.cmd('status', function(msg) {
+		callback(msg.response.locked);
+	})
+}
+
+
+function dappLink(dappName, callback) {
+	MDS.dapplink(dappName, function(msg) {
+		callback(msg);
+	})
+}
+
+function balance(callback) {
+	MDS.cmd('balance', function(msg) {
+		callback(msg.response);
+	})
+}

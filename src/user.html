@@ -12,6 +12,44 @@
 		<section id="header"></section>
 
 		<div class="mobile-only">
+
+			<div id="tip__modal" class="tip-modal">
+				<div class="tip-modal__shell">
+					<form id="tip__form" class="tip__form" method="POST" style="display: block;">
+						<img src="./assets/transfer-circle.svg" alt="Transfer" width="36" class="mb-5" />
+						<h3 class="tip__title mb-5">Tip <span id="tip__name"></span></h3>
+						<p class="mb-7 text-secondary-grey">Enter a tip amount.</p>
+						<div class="position-relative mb-3">
+							<label><input id="tip__amount" class="tip__input mb-3" type="number" placeholder="Amount" min="0.00000001" /></label>
+							<img src="./reactions/minima.png" class="tip__minima_icon" alt="Minima icon" />
+						</div>
+						<input id="tip__node-address" type="hidden" readOnly />
+						<div id="tip__node-locked" class="position-relative mb-3" style="display: none;">
+							<label><input id="tip__node-password" type="password" class="tip__input mb-4" placeholder="Node password" min="0.00000001" /></label>
+							<img id="password-is-hidden" src="./assets/eye-off.svg" class="tip__tip_icon" alt="Password is hidden" />
+						</div>
+						<button id="tip__submit" class="button button--taller button--primary w-full mb-2" type="submit" disabled>Tip</button>
+						<button id="tip__open-wallet" class="button button--taller button--outline w-full mt-4 mb-2 tip__dismiss" onClick="openWallet()" type="button" style="display: none">
+							<img src="./assets/wallet.png" width="18" height="18" alt="Wallet" />Open Wallet
+						</button>
+						<button class="button button--taller w-full tip__dismiss">Cancel</button>
+					</form>
+					<div id="tip__success-pending" style="display: none;">
+						<img src="./assets/alert-circle.svg" alt="Pending" width="32" class="mb-5" />
+						<h3 class="tip__title mb-6">Transaction is pending!</h3>
+						<p class="text-secondary-grey mb-7">Please open the pending app and accept the transaction.</p>
+						<button class="button button--tall button--primary w-full tip__dismiss mb-4">Ok</button>
+					</div>
+					<div id="tip__success-no-confirmation" style="display: none;">
+						<img src="./assets/check-circle.svg" alt="Success" width="32" class="mb-5" />
+						<h3 class="tip__title mb-6">Transaction has been sent</h3>
+						<p class="text-secondary-grey mb-7">The user should receive their tip shortly.</p>
+						<button class="button button--tall button--primary w-full mb-4 tip__dismiss">Cancel</button>
+					</div>
+				</div>
+				<div class="frosted"></div>
+			</div>
+
 			<div class="author-title"><span id="author" class="author-title__username"></span>'s Posts</div>
 			<div class="gap"></div>
 
@@ -253,16 +291,37 @@
 									</div>
 								</div>
 								<div class="feed-item__actions-right">
+									{{#if hasNodeAddress }}
+										<button class="button button--no-padding button--fs-sm mr-1" onClick="openTipModal('{{nodeAddress}}', '{{ username }}')">
+											<svg width="21px" height="22px" viewBox="0 0 21 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+												<g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+													<g id="Group-2" transform="translate(0.995066, 1.643503)">
+														<g id="Transfer:transaction5" transform="translate(5.543264, 5.543264)" fill="#FFFFFF" fill-rule="nonzero">
+															<g id="Group">
+																<polygon id="Path" points="6.00018311 0 2.00006104 0 2.00006104 2.00006104 6.00018311 2.00006104 6.00018311 6.00018311 8.00024414 6.00018311 8.00024414 6.00018311 8.00024414 2.00006104 8.00024414 0"></polygon>
+																<path d="M8.00024414,6.00018311 L8.00024414,8.00024414 L6.00018311,6.00018311 L8.00024414,6.00018311 Z M2.00006104,0 L2.00006104,2.00006104 L0,0 L2.00006104,0 Z" id="Combined-Shape"></path>
+															</g>
+															<rect id="Rectangle" x="0" y="4.00012207" width="4.00012207" height="4.00012207"></rect>
+														</g>
+														<g id="transfer-circle" transform="translate(-0.000000, -0.000000)" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6">
+															<circle id="Oval" cx="9.54338626" cy="9.54338626" r="9.54338626"></circle>
+														</g>
+													</g>
+												</g>
+											</svg>
+											Tip
+										</button>
+									{{/if}}
 									<a href="reply.html?uid={{ uid }}&msgid={{ messageId }}">
-									<button class="button button--no-padding">
-										<svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-											<mask id="path-1-inside-1_612_1839" fill="white">
-												<path fill-rule="evenodd" clip-rule="evenodd" d="M2 11.3732C2 2.73682 7.5728 2.73682 12.0227 2.73682C16.4726 2.73682 22.0454 2.73682 22.0454 11.3732C22.0454 20.0095 16.4726 20.0095 12.0227 20.0095C11.934 20.0095 11.8449 20.0095 11.7554 20.0095L6.65058 22.6024C5.98533 22.9403 5.19771 22.4569 5.19771 21.7108V18.8471C3.32452 17.7413 2 15.5836 2 11.3732Z"/>
-											</mask>
-											<path d="M11.7554 20.0095L11.7566 18.4095L11.3729 18.4092L11.0308 18.5829L11.7554 20.0095ZM6.65058 22.6024L5.926 21.1758L5.92599 21.1758L6.65058 22.6024ZM5.19771 18.8471H6.79771V17.9336L6.01109 17.4693L5.19771 18.8471ZM12.0227 1.13682C9.90367 1.13682 6.94654 1.09922 4.56752 2.41665C1.9496 3.86638 0.4 6.68164 0.4 11.3732H3.6C3.6 7.42835 4.8368 5.92543 6.11776 5.21607C7.63762 4.37442 9.69186 4.33682 12.0227 4.33682V1.13682ZM23.6454 11.3732C23.6454 6.68164 22.0958 3.86638 19.4779 2.41665C17.0989 1.09922 14.1418 1.13682 12.0227 1.13682V4.33682C14.3536 4.33682 16.4078 4.37442 17.9277 5.21607C19.2086 5.92543 20.4454 7.42835 20.4454 11.3732H23.6454ZM12.0227 21.6095C14.1418 21.6095 17.0989 21.6471 19.4779 20.3297C22.0958 18.88 23.6454 16.0647 23.6454 11.3732H20.4454C20.4454 15.318 19.2086 16.8209 17.9277 17.5303C16.4078 18.3719 14.3536 18.4095 12.0227 18.4095V21.6095ZM11.7542 21.6095C11.8444 21.6095 11.9341 21.6095 12.0227 21.6095V18.4095C11.9339 18.4095 11.8454 18.4095 11.7566 18.4095L11.7542 21.6095ZM7.37516 24.0289L12.48 21.436L11.0308 18.5829L5.926 21.1758L7.37516 24.0289ZM3.59771 21.7108C3.59771 23.6508 5.64551 24.9075 7.37517 24.0289L5.92599 21.1758C6.32515 20.9731 6.79771 21.2631 6.79771 21.7108H3.59771ZM3.59771 18.8471V21.7108H6.79771V18.8471H3.59771ZM0.4 11.3732C0.4 15.9402 1.86682 18.7388 4.38434 20.2249L6.01109 17.4693C4.78221 16.7438 3.6 15.227 3.6 11.3732H0.4Z" fill="white" mask="url(#path-1-inside-1_612_1839)"/>
-										</svg>
-										Reply
-									</button>
+										<button class="button button--no-padding">
+											<svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+												<mask id="path-1-inside-1_612_1839" fill="white">
+													<path fill-rule="evenodd" clip-rule="evenodd" d="M2 11.3732C2 2.73682 7.5728 2.73682 12.0227 2.73682C16.4726 2.73682 22.0454 2.73682 22.0454 11.3732C22.0454 20.0095 16.4726 20.0095 12.0227 20.0095C11.934 20.0095 11.8449 20.0095 11.7554 20.0095L6.65058 22.6024C5.98533 22.9403 5.19771 22.4569 5.19771 21.7108V18.8471C3.32452 17.7413 2 15.5836 2 11.3732Z"/>
+												</mask>
+												<path d="M11.7554 20.0095L11.7566 18.4095L11.3729 18.4092L11.0308 18.5829L11.7554 20.0095ZM6.65058 22.6024L5.926 21.1758L5.92599 21.1758L6.65058 22.6024ZM5.19771 18.8471H6.79771V17.9336L6.01109 17.4693L5.19771 18.8471ZM12.0227 1.13682C9.90367 1.13682 6.94654 1.09922 4.56752 2.41665C1.9496 3.86638 0.4 6.68164 0.4 11.3732H3.6C3.6 7.42835 4.8368 5.92543 6.11776 5.21607C7.63762 4.37442 9.69186 4.33682 12.0227 4.33682V1.13682ZM23.6454 11.3732C23.6454 6.68164 22.0958 3.86638 19.4779 2.41665C17.0989 1.09922 14.1418 1.13682 12.0227 1.13682V4.33682C14.3536 4.33682 16.4078 4.37442 17.9277 5.21607C19.2086 5.92543 20.4454 7.42835 20.4454 11.3732H23.6454ZM12.0227 21.6095C14.1418 21.6095 17.0989 21.6471 19.4779 20.3297C22.0958 18.88 23.6454 16.0647 23.6454 11.3732H20.4454C20.4454 15.318 19.2086 16.8209 17.9277 17.5303C16.4078 18.3719 14.3536 18.4095 12.0227 18.4095V21.6095ZM11.7542 21.6095C11.8444 21.6095 11.9341 21.6095 12.0227 21.6095V18.4095C11.9339 18.4095 11.8454 18.4095 11.7566 18.4095L11.7542 21.6095ZM7.37516 24.0289L12.48 21.436L11.0308 18.5829L5.926 21.1758L7.37516 24.0289ZM3.59771 21.7108C3.59771 23.6508 5.64551 24.9075 7.37517 24.0289L5.92599 21.1758C6.32515 20.9731 6.79771 21.2631 6.79771 21.7108H3.59771ZM3.59771 18.8471V21.7108H6.79771V18.8471H3.59771ZM0.4 11.3732C0.4 15.9402 1.86682 18.7388 4.38434 20.2249L6.01109 17.4693C4.78221 16.7438 3.6 15.227 3.6 11.3732H0.4Z" fill="white" mask="url(#path-1-inside-1_612_1839)"/>
+											</svg>
+											Reply
+										</button>
 									</a>
 								</div>
 							</div>
@@ -439,6 +498,30 @@
 					//Initialise Chatter
 					initChatter();
 
+					// Check if app is in write mode
+					isWriteMode(function (mode) {
+						if (mode === 'WRITE') {
+							IS_WRITE_MODE = true;
+						}
+					});
+
+					// Check if app can open the wallet app
+					dappLink('Wallet', function (msg) {
+						if (msg.status) {
+							document.getElementById('tip__open-wallet').style.display = 'flex';
+						}
+					});
+
+					// Check if node is locked for the tip node password
+					isLocked(function (locked) {
+						if (locked) {
+							document.getElementById('tip__node-locked').style.display = 'block';
+						}
+					});
+
+					// Get max amount for the tip amount in the tip modal
+					getMaxAmount();
+
 					selectAllSuperChatters(function(supers){
 						allsuperchatters = supers;
 
@@ -465,6 +548,8 @@
 					});
 
 					createSettingsTable(checkWarnings);
+				} else if (msg.event == 'NEWBALANCE') {
+					getMaxAmount();
 				}
 			});
 
