@@ -807,7 +807,7 @@
 		// hide preview under start chat box
 		document.getElementById('preview').style.display = 'none';
 
-		createRant(text,"0x00","0x00",NODE_ADDRESS,function(rant){
+		createRant(text,"0x00","0x00",function(rant){
 
 			//ok - now add this message to OUR DB
 			addRantToDB(rant,function(msg){

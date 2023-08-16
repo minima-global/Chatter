@@ -603,7 +603,7 @@
 			}
 
 			//Create the Chatter message
-			createRant(text,parentid,baseid,NODE_ADDRESS,function(rant){
+			createRant(text,parentid,baseid,function(rant){
 
 				//ok - now add this message to OUR DB
 				addRantToDB(rant,function(msg){

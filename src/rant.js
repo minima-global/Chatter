@@ -630,7 +630,7 @@ function boost(msgid){
 		//Get the baseid
 		baseid = chatmsg.BASEID;
 
-		createRant('<boost>', msgid, baseid, NODE_ADDRESS, function(rant){
+		createRant('<boost>', msgid, baseid, function(rant){
 
 			//ok - now add this message to OUR DB
 			addRantToDB(rant,function(msg){
@@ -670,9 +670,7 @@ function react(msgid, reaction, reloadOnThisPage = false){
 		//Get the baseid
 		baseid = chatmsg.BASEID;
 
-		createRant('<reaction>'+reaction+'</reaction>', msgid, null, NODE_ADDRESS, function(rant){
-
-			console.log(3);
+		createRant('<reaction>'+reaction+'</reaction>', msgid, null, function(rant){
 
 			//ok - now add this message to OUR DB
 			addRantToDB(rant,function(msg){
