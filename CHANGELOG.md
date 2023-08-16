@@ -1,5 +1,13 @@
 # Changelog
 
+##### [1.7.3] - 16 August 23
+
+- Fixes issue where reacting / boosting a post does not work in previous build
+
+##### [1.7.2] - 16 August 23
+
+- You can tip in decimals
+
 ##### [1.7.1] - 16 August 23
 
 - Adjusted tipping functionality

@@ -1338,7 +1338,7 @@ html {
     outline: none;
     border: 2px solid #3b3b3b;
     background: black;
-    padding: 0 12px;
+    padding: 0 48px 0 12px;
     color: white;
     font-weight: bold;
     font-size: 16px;
