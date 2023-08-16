@@ -310,7 +310,7 @@ function checkReadyRechatter(messageid){
 /**
  * Create a Chatter message
  */
-function createRant(basemessage,parentid,baseid,callback){
+function createRant(basemessage,parentid,baseid,nodeAddress,callback){
 
 	//URL Encode everything..
 	var message  = encodeStringForDB(basemessage);
@@ -331,6 +331,7 @@ function createRant(basemessage,parentid,baseid,callback){
 	msgjson.message 	= message;
 	msgjson.parentid 	= parentid;
 	msgjson.baseid 		= baseid;
+	msgjson.node_address = nodeAddress;
 	msgjson.date 		= (new Date()).getTime();
 
 	//Make the HASH unique - even for the same message at the same time
@@ -652,7 +653,6 @@ function isLocked(callback) {
 		callback(msg.response.locked);
 	})
 }
-
 
 function dappLink(dappName, callback) {
 	MDS.dapplink(dappName, function(msg) {

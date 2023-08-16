@@ -342,7 +342,7 @@
 					</div>
 					<div class="feed-item__actions-right">
 						{{#if isPosted}}
-							{{#if hasNodeAddress }}
+							{{#if nodeAddress }}
 								<button class="button button--no-padding button--fs-sm mr-1" onClick="openTipModal('{{nodeAddress}}', '{{ username }}')">
 									<svg width="21px" height="22px" viewBox="0 0 21 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 										<g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -526,6 +526,11 @@
 				// Get max amount for the tip amount in the tip modal
 				getMaxAmount();
 
+				// Get node address for tipping
+				MDS.cmd('getaddress', function(msg) {
+					NODE_ADDRESS = msg.response.miniaddress;
+				});
+
 				//Initialise Chatter
 				initChatter(function(){
 					document.getElementById('header').innerHTML = templates.header({ username: MAXIMA_USERNAME });
@@ -598,7 +603,7 @@
 			}
 
 			//Create the Chatter message
-			createRant(text,parentid,baseid,function(rant){
+			createRant(text,parentid,baseid,NODE_ADDRESS,function(rant){
 
 				//ok - now add this message to OUR DB
 				addRantToDB(rant,function(msg){

@@ -1,5 +1,9 @@
 # Changelog
 
+##### [1.7.1] - 16 August 23
+
+- Adjusted tipping functionality
+
 ##### [1.7.0] - 14 August 23
 
 - You can now tip another user

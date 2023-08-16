@@ -57,7 +57,7 @@ async function createMessageTable(messagerow, allsuperchatters, showactions, dep
 	var dbmsg 		= decodeStringFromDB(messagerow.MESSAGE).replaceAll("\n","<br>");
 	var msg 		= DOMPurify.sanitize(dbmsg,{
 		KEEP_CONTENT: false,
-		ADD_TAGS: ["node_address", "reaction","boost","youtube","spotify_track","spotify_podcast","spotify_artist","spotify_album","spotify_playlist"],
+		ADD_TAGS: ["reaction","boost","youtube","spotify_track","spotify_podcast","spotify_artist","spotify_album","spotify_playlist"],
 	});
 
 	if (msg.includes('<boost></boost>')) {
@@ -72,6 +72,12 @@ async function createMessageTable(messagerow, allsuperchatters, showactions, dep
 	var baseid 		= DOMPurify.sanitize(messagerow.BASEID+"");
 	var messageid	= DOMPurify.sanitize(messagerow.MESSAGEID+"");
 	var publickey	= DOMPurify.sanitize(messagerow.PUBLICKEY+"");
+	var chatter = JSON.parse(messagerow.CHATTER);
+	var nodeAddress	= chatter
+		&& chatter.hasOwnProperty('message')
+		&& chatter.message.node_address
+		&& DOMPurify.sanitize(chatter.message.node_address+"");
+
 	var replyTo 	= null;
 
 	var dd 		= new Date(+messagerow.RECDATE);
@@ -170,20 +176,6 @@ async function createMessageTable(messagerow, allsuperchatters, showactions, dep
 	messageConverted = convertSpotify("playlist",messageConverted);
 	messageConverted = convertSpotifyPodcast(messageConverted);
 
-	/**
-	 * We check to see if the message has a <node_address>, if it does, we want
-	 * to strip it out of the message
-	 */
-	let hasNodeAddress = false;
-	let nodeAddress = false;
-	const nodeAddressResult = convertNodeAddress(messageConverted);
-
-	if (nodeAddressResult.result) {
-		hasNodeAddress = true;
-		nodeAddress = nodeAddressResult.nodeAddress;
-		messageConverted = nodeAddressResult.message;
-	}
-
 	return __templates.feedItem({
 		username: usernameorig,
 		messageId: messageid,
@@ -200,7 +192,6 @@ async function createMessageTable(messagerow, allsuperchatters, showactions, dep
 		depth,
 		isPosted,
 		showReactions: reactions.show,
-		hasNodeAddress,
 		...reactions,
 		nodeAddress,
 	});
