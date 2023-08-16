@@ -1,5 +1,9 @@
 # Changelog
 
+##### [1.7.4] - 16 August 23
+
+- Fixed preview post
+
 ##### [1.7.3] - 16 August 23
 
 - Fixes issue where reacting / boosting a post does not work in previous build

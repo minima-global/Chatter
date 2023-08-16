@@ -1369,3 +1369,7 @@ input[type=number] {
 .position-relative {
     position: relative;
 }
+
+#previewmessage .hr {
+    display: none;
+}

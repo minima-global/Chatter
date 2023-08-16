@@ -72,7 +72,8 @@ async function createMessageTable(messagerow, allsuperchatters, showactions, dep
 	var baseid 		= DOMPurify.sanitize(messagerow.BASEID+"");
 	var messageid	= DOMPurify.sanitize(messagerow.MESSAGEID+"");
 	var publickey	= DOMPurify.sanitize(messagerow.PUBLICKEY+"");
-	var chatter = JSON.parse(messagerow.CHATTER);
+	var chatter = messagerow.CHATTER ? JSON.parse(messagerow.CHATTER) : false;
+
 	var nodeAddress	= chatter
 		&& chatter.hasOwnProperty('message')
 		&& chatter.message.node_address
