@@ -1,5 +1,9 @@
 # Changelog
 
+##### [1.7.5] - 17 August 23
+
+- Fixes issue with YouTube iframe not being rendered because of DOM purify
+
 ##### [1.7.4] - 16 August 23
 
 - Fixed preview post

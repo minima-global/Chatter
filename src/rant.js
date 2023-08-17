@@ -180,7 +180,7 @@ async function createMessageTable(messagerow, allsuperchatters, showactions, dep
 	return __templates.feedItem({
 		username: usernameorig,
 		messageId: messageid,
-		message: DOMPurify.sanitize(messageConverted),
+		message: messageConverted,
 		postedAt: datestr,
 		prettyPostedAt: prettyPostedAt,
 		replyTo: replyTo,

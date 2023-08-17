@@ -358,7 +358,7 @@ html {
 }
 
 .feed-item__content-text .youtubecontainer iframe {
-    height: 280px;
+    height: 230px;
     position: absolute;
     top: 0;
     width: 100%;
@@ -366,7 +366,7 @@ html {
 
 @media screen and (min-width: 568px) {
     .feed-item__content-text .youtubecontainer iframe {
-        height: 260px;
+        height: 230px;
     }
 }
 
