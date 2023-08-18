@@ -955,7 +955,7 @@ html {
     align-items: center;
     position: absolute;
     flex-direction: row;
-    width: 300px;
+    width: 340px;
     z-index: 50;
     top: 0;
     left: 0;
@@ -1119,6 +1119,82 @@ html {
     transform-origin: center;
     transition: 0.2s all;
     background-size: contain;
+    width: 28px;
+    height: 28px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.react_cold_face {
+    background-image: url('./reactions/cold_face_3d.png');
+}
+
+.react_fearful_face {
+    background-image: url('./reactions/fearful_face_3d.png');
+}
+
+.react_frowning_face {
+    background-image: url('./reactions/frowning_face_3d.png');
+}
+
+.react_weary_face {
+    background-image: url('./reactions/weary_face_3d.png');
+}
+
+.react_nerd_face {
+    background-image: url('./reactions/nerd_face_3d.png');
+}
+
+.react_sleeping_face {
+    background-image: url('./reactions/sleeping_face_3d.png');
+}
+
+.react_spiral_face {
+    background-image: url('./reactions/spiral_face_3d.png');
+}
+
+.react_shushing_face {
+    background-image: url('./reactions/shushing_face_3d.png');
+}
+
+.react_thinking_face {
+    background-image: url('./reactions/thinking_face_3d.png');
+}
+
+.react_grinning_face {
+    background-image: url('./reactions/grinning_face_3d.png');
+}
+
+.react_yum_face {
+    background-image: url('./reactions/yum_face_3d.png');
+}
+
+.react_kissing_face {
+    background-image: url('./reactions/kissing_face_3d.png');
+}
+
+.react_pleading_face {
+    background-image: url('./reactions/pleading_face_3d.png');
+}
+
+.react_loved_face {
+    background-image: url('./reactions/loved_face_3d.png');
+}
+
+.react_starstruck_face {
+    background-image: url('./reactions/starstruck_face_3d.png');
+}
+
+.react_screaming_face {
+    background-image: url('./reactions/screaming_face_3d.png');
+}
+
+.react_squinting_face {
+    background-image: url('./reactions/squinting_face_3d.png');
+}
+
+.react_heart_face {
+    background-image: url('./reactions/heart_face_3d.png');
 }
 
 .react-reaction:disabled {
@@ -1372,4 +1448,9 @@ input[type=number] {
 
 #previewmessage .hr {
     display: none;
+}
+
+.feed .feed-item-wrapper:last-child .react__reactions {
+    margin-top: -120px;
+    transform-origin: center center;
 }

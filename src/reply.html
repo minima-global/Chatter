@@ -228,7 +228,7 @@
 		</header>
 	</script>
 	<script id="feed-item-template" type="text/x-handlebars-template">
-		<div>
+		<div class="feed-item-wrapper">
 			{{#if replyTo}}
 				<div class="feed-item-banner">
 					<svg width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -334,6 +334,24 @@
 										<button onclick="react('{{ messageId }}', 'facepalm')" {{#if facepalm_locked}}disabled{{/if}} class="react-reaction react_facepalm"></button>
 										<button onclick="react('{{ messageId }}', 'celebrate')" {{#if celebrate_locked}}disabled{{/if}} class="react-reaction react_celebrate"></button>
 										<button onclick="react('{{ messageId }}', 'cool')" {{#if cool_locked}}disabled{{/if}} class="react-reaction react_cool"></button>
+										<button onclick="react('{{ messageId }}', 'cold')" {{#if cold_locked}}disabled{{/if}} class="react-reaction react_cold_face"></button>
+										<button onclick="react('{{ messageId }}', 'fearful')" {{#if fearful_locked}}disabled{{/if}} class="react-reaction react_fearful_face"></button>
+										<button onclick="react('{{ messageId }}', 'frowning')" {{#if frowning_locked}}disabled{{/if}} class="react-reaction react_frowning_face"></button>
+										<button onclick="react('{{ messageId }}', 'weary')" {{#if weary_locked}}disabled{{/if}} class="react-reaction react_weary_face"></button>
+										<button onclick="react('{{ messageId }}', 'nerd')" {{#if nerd_locked}}disabled{{/if}} class="react-reaction react_nerd_face"></button>
+										<button onclick="react('{{ messageId }}', 'sleeping')" {{#if sleeping_locked}}disabled{{/if}} class="react-reaction react_sleeping_face"></button>
+										<button onclick="react('{{ messageId }}', 'spiral')" {{#if spiral_locked}}disabled{{/if}} class="react-reaction react_spiral_face"></button>
+										<button onclick="react('{{ messageId }}', 'shushing')" {{#if shushing_locked}}disabled{{/if}} class="react-reaction react_shushing_face"></button>
+										<button onclick="react('{{ messageId }}', 'thinking')" {{#if thinking_locked}}disabled{{/if}} class="react-reaction react_thinking_face"></button>
+										<button onclick="react('{{ messageId }}', 'grinning')" {{#if grinning_locked}}disabled{{/if}} class="react-reaction react_grinning_face"></button>
+										<button onclick="react('{{ messageId }}', 'yum')" {{#if yum_locked}}disabled{{/if}} class="react-reaction react_yum_face"></button>
+										<button onclick="react('{{ messageId }}', 'kissing')" {{#if kissing_locked}}disabled{{/if}} class="react-reaction react_kissing_face"></button>
+										<button onclick="react('{{ messageId }}', 'pleading')" {{#if pleading_locked}}disabled{{/if}} class="react-reaction react_pleading_face"></button>
+										<button onclick="react('{{ messageId }}', 'loved')" {{#if loved_locked}}disabled{{/if}} class="react-reaction react_loved_face"></button>
+										<button onclick="react('{{ messageId }}', 'starstruck')" {{#if starstruck_locked}}disabled{{/if}} class="react-reaction react_starstruck_face"></button>
+										<button onclick="react('{{ messageId }}', 'screaming')" {{#if screaming_locked}}disabled{{/if}} class="react-reaction react_screaming_face"></button>
+										<button onclick="react('{{ messageId }}', 'squinting')" {{#if squinting_locked}}disabled{{/if}} class="react-reaction react_squinting_face"></button>
+										<button onclick="react('{{ messageId }}', 'heart_face')" {{#if heart_face_locked}}disabled{{/if}} class="react-reaction react_heart_face"></button>
 										<button onclick="react('{{ messageId }}', 'minima')" {{#if minima_locked}}disabled{{/if}} class="react-reaction react_minima"></button>
 									</div>
 								</div>
@@ -464,6 +482,114 @@
 						{{pray}}
 					</div>
 				{{/if }}
+				{{#if cold }}
+					<div class="feed-item-reaction__item">
+						<div class="react-reaction react_cold_face"></div>
+						{{cold}}
+					</div>
+				{{/if}}
+				{{#if fearful }}
+					<div class="feed-item-reaction__item">
+						<div class="react-reaction react_fearful_face"></div>
+						{{fearful}}
+					</div>
+				{{/if}}
+				{{#if frowning }}
+					<div class="feed-item-reaction__item">
+						<div class="react-reaction react_frowning_face"></div>
+						{{frowning}}
+					</div>
+				{{/if}}
+				{{#if weary }}
+					<div class="feed-item-reaction__item">
+						<div class="react-reaction react_weary_face"></div>
+						{{weary}}
+					</div>
+				{{/if}}
+				{{#if nerd }}
+					<div class="feed-item-reaction__item">
+						<div class="react-reaction react_nerd_face"></div>
+						{{nerd}}
+					</div>
+				{{/if}}
+				{{#if sleeping }}
+					<div class="feed-item-reaction__item">
+						<div class="react-reaction react_sleeping_face"></div>
+						{{sleeping}}
+					</div>
+				{{/if}}
+				{{#if spiral }}
+					<div class="feed-item-reaction__item">
+						<div class="react-reaction react_spiral_face"></div>
+						{{spiral}}
+					</div>
+				{{/if}}
+				{{#if shushing }}
+					<div class="feed-item-reaction__item">
+						<div class="react-reaction react_shushing_face"></div>
+						{{shushing}}
+					</div>
+				{{/if}}
+				{{#if thinking }}
+					<div class="feed-item-reaction__item">
+						<div class="react-reaction react_thinking_face"></div>
+						{{thinking}}
+					</div>
+				{{/if}}
+				{{#if grinning }}
+					<div class="feed-item-reaction__item">
+						<div class="react-reaction react_grinning_face"></div>
+						{{grinning}}
+					</div>
+				{{/if}}
+				{{#if yum }}
+					<div class="feed-item-reaction__item">
+						<div class="react-reaction react_yum_face"></div>
+						{{yum}}
+					</div>
+				{{/if}}
+				{{#if kissing }}
+					<div class="feed-item-reaction__item">
+						<div class="react-reaction react_kissing_face"></div>
+						{{kissing}}
+					</div>
+				{{/if}}
+				{{#if pleading }}
+					<div class="feed-item-reaction__item">
+						<div class="react-reaction react_pleading_face"></div>
+						{{pleading}}
+					</div>
+				{{/if}}
+				{{#if loved }}
+					<div class="feed-item-reaction__item">
+						<div class="react-reaction react_loved_face"></div>
+						{{loved}}
+					</div>
+				{{/if}}
+				{{#if starstruck }}
+					<div class="feed-item-reaction__item">
+						<div class="react-reaction react_starstruck_face"></div>
+						{{starstruck}}
+					</div>
+				{{/if}}
+				{{#if screaming }}
+					<div class="feed-item-reaction__item">
+						<div class="react-reaction react_screaming_face"></div>
+						{{screaming}}
+					</div>
+				{{/if}}
+				{{#if squinting }}
+					<div class="feed-item-reaction__item">
+						<div class="react-reaction react_squinting_face"></div>
+						{{squinting}}
+					</div>
+				{{/if}}
+				{{#if heart_face }}
+					<div class="feed-item-reaction__item">
+						<div class="react-reaction react_heart_face"></div>
+						{{heart_face}}
+					</div>
+				{{/if}}
 				{{#if minima }}
 					<div class="feed-item-reaction__item">
 						<div class="react-reaction react_minima"></div>

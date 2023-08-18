@@ -1,5 +1,10 @@
 # Changelog
 
+##### [1.7.6] - 18 August 23
+
+- The user page now displays posts from newest to oldest
+- Added more emojis
+
 ##### [1.7.5] - 17 August 23
 
 - Fixes issue with YouTube iframe not being rendered because of DOM purify
