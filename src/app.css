@@ -618,6 +618,7 @@ html {
     top: 0 !important;
     background: rgba(0,0,0,0.7);
     text-align: center;
+    overflow-y: overlay;
 }
 
 .previewdiv .feed-item {

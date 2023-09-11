@@ -33,6 +33,7 @@ video {
 }
 
 .previewdiv {
+	overflow: overlay;
   position: fixed;
   display:none;
   text-align:center;
