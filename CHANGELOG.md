@@ -1,5 +1,9 @@
 # Changelog
 
+##### [1.7.6] - 12 September 23
+
+- updated mds.js
+
 ##### [1.7.6] - 18 August 23
 
 - The user page now displays posts from newest to oldest
