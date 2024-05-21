@@ -1,5 +1,9 @@
 # Changelog
 
+##### [1.8.0] - 21 May 24
+
+- Fix overflowing of username on both replyTo and normal
+
 ##### [1.7.6] - 12 September 23
 
 - updated mds.js

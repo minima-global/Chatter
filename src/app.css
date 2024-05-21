@@ -253,14 +253,17 @@ html {
     padding-bottom: 12px;
     display: flex;
     position: relative;
+    align-items: center;
+    gap: 8px;
 }
 
 .feed-item__heading-title {
-    flex: 1 1 auto;
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
     cursor: pointer;
+
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: center;
+    gap: 4px;
 }
 
 .feed-item__menu {
@@ -689,6 +692,12 @@ html {
     margin-top: 24px;
     margin-bottom: 24px;
     margin-left: 24px;
+
+    display: grid;
+    grid-template-columns: auto 1fr;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .author-title__username {
@@ -1454,4 +1463,40 @@ input[type=number] {
 .feed .feed-item-wrapper:last-child .react__reactions {
     margin-top: -120px;
     transform-origin: center center;
+}
+
+.truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.replyto {
+    background: transparent;
+    width: 100%;
+    color: #FFFFFF;
+    border: none;
+}
+.username {
+    background: transparent;
+    color: #FFFFFF;
+    border: none;
+}
+.username:focus {
+    outline: none;
+}
+.replyto:focus {
+    outline: none;
+}
+.grid {
+    display: grid;    
+    width: 100%;
+}
+.items-center {
+    align-items: center;
+}
+.grid-cols-auto-1fr {
+    grid-template-columns: auto 1fr;
+}
+.gap-2 {
+    grid-gap: 4px;
 }

@@ -494,13 +494,18 @@
       				<path d="M14.5999 13.1875V9.74999C14.5999 8.92499 14.3096 8.22221 13.7291 7.64166C13.1485 7.0611 12.4457 6.77083 11.6207 6.77083H2.6374L6.16657 10.3L5.20407 11.2625L0.0249023 6.08333L5.20407 0.90416L6.16657 1.86666L2.6374 5.39583H11.6207C12.8277 5.39583 13.855 5.81963 14.7026 6.66724C15.5508 7.51546 15.9749 8.54305 15.9749 9.74999V13.1875H14.5999Z"
       					fill="white"/>
       			</svg>
-      			Reply to {{{replyTo}}}
+      			Reply to <input readonly value="{{{replyTo}}}" class="truncate replyto" />
       		</div>
       	{{/if}}
       	<div class="feed-item">
       		<div class="feed-item__heading">
       			<div class="feed-item__heading-title" onclick="document.location.href='user.html?uid={{ uid }}&publicKey={{ publicKey }}'">
-      				{{{ username }}}  {{#if isPosted}}{{#if superChatter}}<span class="superchatter"></span>{{/if}}  &#8226;&nbsp; <span class="text-secondary-grey">{{{ prettyPostedAt }}}</span>{{/if}}
+      				<p class="truncate">{{{ username }}}</p>
+                
+                <div>
+                  {{#if isPosted}}{{#if superChatter}}<span class="superchatter"></span>{{/if}}
+                  &#8226;&nbsp; <span class="text-secondary-grey">{{{ prettyPostedAt }}}</span>{{/if}}
+                </div>
       			</div>
       			<div class="feed-item__menu">
       				{{#if isPosted}}
