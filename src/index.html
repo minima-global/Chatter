@@ -176,7 +176,7 @@
           width="75"
           height="75"
         />
-        <div class="intro__title mb-5">
+        <div class="intro__title mb-5 truncate">
           Looks like you're all alone here<span class="name"></span>.
         </div>
 
@@ -202,10 +202,6 @@
           >
             Add contacts
           </button>
-        </div>
-
-        <div id="has-contacts" style="display: none">
-          <div class="mb-5">Create your first post.</div>
         </div>
 
         <div id="invite-friends-android" class="mt-6" style="display: none">
@@ -502,7 +498,7 @@
           </svg>
         </div>
         <div class="header__user">
-          {{{username}}}
+          <input readonly value="{{{username}}}" class="truncate replyto text-right" />          
         </div>
       </header>
     </script>
@@ -1034,7 +1030,7 @@
           </svg>
         </div>
         <div class="header__user">
-          {{{username}}}
+          <input readonly value="{{{username}}}" class="truncate replyto text-right" />          
         </div>
       </header>
     </script>

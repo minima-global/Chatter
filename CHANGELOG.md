@@ -1,5 +1,10 @@
 # Changelog
 
+##### [1.8.1] - 21 May 24
+
+- Fix overflowing of username on header + intro
+- Remove duplicate create your first post
+
 ##### [1.8.0] - 21 May 24
 
 - Fix overflowing of username on both replyTo and normal

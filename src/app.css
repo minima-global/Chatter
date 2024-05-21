@@ -1500,3 +1500,6 @@ input[type=number] {
 .gap-2 {
     grid-gap: 4px;
 }
+.text-right {
+    text-align: right;
+}
