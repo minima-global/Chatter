@@ -9,6 +9,7 @@
  */
 var MAXIMA_PUBLICKEY = "";
 var MAXIMA_USERNAME  = "";
+var MAXIMA_ICON      = "";
 var MAXIMA_CONTACT   = "";
 
 var MAX_MESSAGE_LENGTH = 250000;
@@ -25,6 +26,7 @@ function initChatter(callback){
 	MDS.cmd("maxima",function(msg){
 		MAXIMA_PUBLICKEY = msg.response.publickey;
 		MAXIMA_USERNAME  = msg.response.name;
+		MAXIMA_ICON      = msg.response.icon;
 
 		//Hack for now..
 		MAXIMA_CONTACT	 = msg.response.contact;
@@ -46,6 +48,7 @@ function createDB(callback){
 			+"  `chatter` clob(256K) NOT NULL, "
 			+"  `publickey` varchar(512) NOT NULL, "
 			+"  `username` varchar(512) NOT NULL, "
+			+"  `icon` TEXT NOT NULL, "
 			+"  `message` varchar(250000) NOT NULL, "
 			+"  `messageid` varchar(160) NOT NULL, "
 			+"  `parentid` varchar(160) NOT NULL, "
@@ -64,6 +67,7 @@ function createDB(callback){
 						+"  `id` bigint auto_increment, "
 						+"  `publickey` varchar(512) NOT NULL, "
 						+"  `username` varchar(512) NOT NULL, "
+						+"  `icon` TEXT NOT NULL, "
 						+"  `rechat` int NOT NULL default 0 "
 						+" )";
 
@@ -315,6 +319,7 @@ function createRant(basemessage,parentid,baseid,callback){
 	//URL Encode everything..
 	var message  = encodeStringForDB(basemessage);
 	var username = encodeStringForDB(MAXIMA_USERNAME);
+	var icon     = isUrlEncoded(MAXIMA_ICON) ? MAXIMA_ICON : encodeStringForDB(MAXIMA_ICON); // CHECK IF ALREADY URL ENCODED..
 
 	if(message.length > MAX_MESSAGE_LENGTH){
 		MDS.log("MESSAGE TOO LONG! for createRant..");
@@ -328,6 +333,7 @@ function createRant(basemessage,parentid,baseid,callback){
 
 	msgjson.publickey 	= MAXIMA_PUBLICKEY;
 	msgjson.username 	= username;
+	msgjson.icon        = icon;
 	msgjson.message 	= message;
 	msgjson.parentid 	= parentid;
 	msgjson.baseid 		= baseid;
@@ -518,9 +524,10 @@ function addRantToDB(chatter,callback){
 	}
 
 	//The SQL to insert
-	var insertsql = "INSERT INTO messages(chatter,publickey,username,message,messageid,parentid,baseid,msgdate,recdate) VALUES "+
+	var insertsql = "INSERT INTO messages(chatter,publickey,icon,username,message,messageid,parentid,baseid,msgdate,recdate) VALUES "+
 						"('"+fullchat+"','"
 							+msgjson.publickey+"','"
+							+msgjson.icon+"','"
 							+msgjson.username+"','"
 							+msgjson.message+"','"
 							+chatter.messageid+"','"
@@ -664,4 +671,50 @@ function balance(callback) {
 	MDS.cmd('balance', function(msg) {
 		callback(msg.response);
 	})
+}
+// check if already urlEncoded
+function isUrlEncoded(str) {
+    try {
+        return decodeURIComponent(str) !== str;
+    } catch (e) {
+        return false; // In case str is not a valid encoded string
+    }
+}
+
+// render the user's Maxima icon
+function renderIcon(maximaIcon) {
+    const dataImageBase64Regex = /^data:image\/(?:png|jpeg|gif|bmp|webp|svg\+xml);base64,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/;
+    const isBase64 = maximaIcon ? dataImageBase64Regex.test(decodeURIComponent(maximaIcon)) : false;
+
+    if (isBase64) {
+        const div = document.createElement('div');
+        div.className = 'avatar';
+
+        const img = document.createElement('img');
+        img.src = decodeURIComponent(maximaIcon);
+        img.alt = 'maxima-icon';
+
+        div.appendChild(img);
+        return div;
+    }
+
+    const regexp = /[\p{Extended_Pictographic}\u{1F3FB}-\u{1F3FF}\u{1F9B0}-\u{1F9B3}]/gu;
+    const nameEmojiMatches = name.match(regexp);
+
+    if (nameEmojiMatches && nameEmojiMatches.length > 0) {
+        const span = document.createElement('span');
+        span.textContent = nameEmojiMatches[0];
+        return span;
+    }
+
+    const defaultDiv = document.createElement('div');
+    defaultDiv.className = 'avatar';
+    defaultDiv.textContent = MAXIMA_USERNAME.charAt(0).toUpperCase();
+    return defaultDiv;
+}
+// helper method for renderIcon
+function elementToString(element) {
+    const wrapper = document.createElement('div');
+    wrapper.appendChild(element);
+    return wrapper.innerHTML;
 }

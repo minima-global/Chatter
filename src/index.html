@@ -497,8 +497,11 @@
             </defs>
           </svg>
         </div>
-        <div class="header__user">
-          <input readonly value="{{{username}}}" class="truncate replyto text-right" />          
+        <div onclick="openMaxContacts()" class="header__user">
+           <div class="header__user-profile">
+             <input readonly value="{{{username}}}" class="truncate" />          
+             {{{ icon }}}          
+          </div>
         </div>
       </header>
     </script>
@@ -591,15 +594,17 @@
       						  fill="white"/>
       				</svg>
               <div class="grid grid-cols-auto-1fr gap-2 items-center">
-                Reply to <input readonly value="{{{replyTo}}}" class="truncate replyto" /> 
+                <span class="text-yellow-500">Reply to</span> <input readonly value="{{{replyTo}}}" class="truncate replyto" /> 
               </div>
       			</div>
       		{{/if}}
       		<div class="feed-item">
       			<div class="feed-item__heading">
       				<div class="feed-item__heading-title" onclick="document.location.href='user.html?uid={{ uid }}&publicKey={{ publicKey }}'">
-      					
-                <p class="truncate">{{{ username }}}</p>
+                <div class="feed-item__profile-wrapper">
+                  {{{ icon }}}
+                  <p class="truncate">{{{ username }}}</p>
+                </div>
                 
                 <div>
                   {{#if isPosted}}{{#if superChatter}}<span class="superchatter"></span>{{/if}}
@@ -1149,8 +1154,11 @@
                 ", " + MAXIMA_USERNAME;
             }
 
+            const iconWrapper = elementToString(renderIcon(MAXIMA_ICON));            
+
             document.getElementById("header").innerHTML = templates.header({
               username: MAXIMA_USERNAME,
+              icon: iconWrapper,
             });
 
             /**
@@ -1260,8 +1268,9 @@
         }
 
         var msgrow = {};
-        msgrow.MESSAGE = encodeStringForDB(text);
+        msgrow.MESSAGE = encodeStringForDB(text);        
         msgrow.USERNAME = MAXIMA_USERNAME;
+        msgrow.ICON    = MAXIMA_ICON;
         msgrow.RECDATE = new Date().getTime();
         msgrow.PARENTID = "0x00";
 
@@ -1322,6 +1331,13 @@
               }
             });
           });
+        });
+      }
+
+      function openMaxContacts() {
+        MDS.dapplink('MaxContacts', function (msg) {
+          // Open the link in a new tab
+          window.open(`${MDS.filehost}${msg.uid}/index.html?uid=${msg.sessionid}#/profile`, '_blank');
         });
       }
 

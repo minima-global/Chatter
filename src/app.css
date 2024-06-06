@@ -66,12 +66,30 @@ html {
 }
 
 .header__user {
-    flex: 1 1 auto;
-    color: white;
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    user-select: none;
+    cursor: pointer;
+}
+
+.header__user-profile {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center; 
+    gap: 8px;
+}
+
+.header__user-profile input {
+    background-color: transparent;
+    max-width: max-content;
+    color: white;
+    font-weight: 800;
+    border: none;
+    text-align: right;
+    cursor: pointer;    
+}
+.header__user-profile input:focus {
+    outline: none
 }
 
 .message-box, .message-box__item, .media-box, .actions {
@@ -288,6 +306,18 @@ html {
     right: 0;
     z-index: 99;
     background-color: #585F63;
+}
+
+.feed-item__profile-wrapper {
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    gap: 8px;
+}
+
+.feed-item__profile-wrapper {
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    gap: 8px;
 }
 
 .popout-nav {
@@ -1475,6 +1505,7 @@ input[type=number] {
     width: 100%;
     color: #FFFFFF;
     border: none;
+    max-width: max-content;
 }
 .username {
     background: transparent;
@@ -1503,3 +1534,25 @@ input[type=number] {
 .text-right {
     text-align: right;
 }
+.avatar {
+    background-color: #FFFFFF;
+    border-radius: 50%;
+    height: 32px;
+    width: 32px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+}
+.avatar img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.text-yellow-500 {
+    color: #ECFF75;
+}
+

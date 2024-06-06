@@ -173,14 +173,17 @@
 											  fill="white"/>
 									</svg>
 									<div class="grid grid-cols-auto-1fr gap-2 items-center">
-										Reply to <input readonly value="{{{replyTo}}}" class="truncate replyto" /> 
+										<span class="text-yellow-500">Reply to</span> <input readonly value="{{{replyTo}}}" class="truncate replyto" /> 
 									  </div>
 								</div>
 							{{/if}}
 							<div class="feed-item">
 								<div class="feed-item__heading">
 									<div class="feed-item__heading-title" onclick="document.location.href='user.html?uid={{ publicKey }}'">
-										<p class="truncate">{{{ username }}}</p>
+										<div class="feed-item__profile-wrapper">
+											{{{ icon }}}
+											<p class="truncate">{{{ username }}}</p>
+										  </div>
                 
 										<div>
 										{{#if isPosted}}{{#if superChatter}}<span class="superchatter"></span>{{/if}}

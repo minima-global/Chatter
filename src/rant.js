@@ -91,13 +91,15 @@ async function createMessageTable(messagerow, allsuperchatters, showactions, dep
 
 	//Are they a SUPER CHATTER
 	var un = decodeStringFromDB(messagerow.USERNAME);
+	var ic = decodeStringFromDB(messagerow.ICON);
 	var usernameorig = DOMPurify.sanitize(un);
 
 	var username = DOMPurify.sanitize(un+"");
-
+	var icon = DOMPurify.sanitize(ic+"");
+	var renderedIcon = elementToString(renderIcon(icon));
 	//Now start making the Table..
-	var userline = "<table width=100%><tr><td class=namefont><a href='superchatter.html?uid="+MDS.minidappuid
-					+"&username="+usernameorig
+	var userline = "<table width=100%><tr><td class=namefont> <a href='superchatter.html?uid="+MDS.minidappuid
+					+"&username="+usernameorig+
 					+"&publickey="+publickey+"'>"+username+"</a></td><td style='text-align:right;'>"+datestr+"</td></tr></table>";
 
 	var msgtable = "<table border=0 class=messagetable>"
@@ -179,6 +181,7 @@ async function createMessageTable(messagerow, allsuperchatters, showactions, dep
 
 	return __templates.feedItem({
 		username: usernameorig,
+		icon: renderedIcon,
 		messageId: messageid,
 		message: messageConverted,
 		postedAt: datestr,
