@@ -499,7 +499,7 @@
         </div>
         <div onclick="openMaxContacts()" class="header__user">
            <div class="header__user-profile">
-             <input readonly value="{{{username}}}" class="truncate" />          
+             <p class="truncate text-white">{{{username}}}</p>
              {{{ icon }}}          
           </div>
         </div>
@@ -1193,10 +1193,6 @@
                   if (msg.response.contacts.length === 0) {
                     return (document.getElementById(
                       "add-contact"
-                    ).style.display = "block");
-                  } else {
-                    return (document.getElementById(
-                      "has-contacts"
                     ).style.display = "block");
                   }
                 });

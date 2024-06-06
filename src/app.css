@@ -1545,6 +1545,7 @@ input[type=number] {
     justify-content: center;
     overflow: hidden;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+    color: black;
 }
 .avatar img {
     height: 100%;
@@ -1556,3 +1557,6 @@ input[type=number] {
     color: #ECFF75;
 }
 
+.text-white {
+    color: white;
+}

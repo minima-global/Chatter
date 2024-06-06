@@ -1,11 +1,14 @@
 # Changelog
 
+##### [1.10.0] - 06 June 24
+
+- Modify how icons are supported
+
 ##### [1.9.0] - 06 June 24
 
 - Added Icon Support
 - Clicking your profile in the home page header will now open MaxContacts on your profile page
 - Some design tweaks on the feed message wrappers
-
 
 ##### [1.8.1] - 21 May 24
 

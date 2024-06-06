@@ -52,7 +52,6 @@ async function drawCompleteMainTable(thetable,allrows,callback){
 }
 
 async function createMessageTable(messagerow, allsuperchatters, showactions, depth = 0, reactions = { show: false }){
-
 	//Sanitize and clean the input - allow our custom youtube tag
 	var dbmsg 		= decodeStringFromDB(messagerow.MESSAGE).replaceAll("\n","<br>");
 	var msg 		= DOMPurify.sanitize(dbmsg,{
@@ -91,12 +90,24 @@ async function createMessageTable(messagerow, allsuperchatters, showactions, dep
 
 	//Are they a SUPER CHATTER
 	var un = decodeStringFromDB(messagerow.USERNAME);
-	var ic = decodeStringFromDB(messagerow.ICON);
 	var usernameorig = DOMPurify.sanitize(un);
-
+	var renderedIcon = null;
 	var username = DOMPurify.sanitize(un+"");
-	var icon = DOMPurify.sanitize(ic+"");
-	var renderedIcon = elementToString(renderIcon(icon));
+
+	if (!messagerow.ICON) {
+		var _chatter = JSON.parse(messagerow.CHATTER);
+		var isMessage =  _chatter.type === 'MESSAGE';
+		const getIcon = isMessage && _chatter.message.icon ? _chatter.message.icon : null;	
+		if (getIcon !== null) {
+			var ic = decodeStringFromDB(getIcon);
+			var icon = DOMPurify.sanitize(ic+"");
+			renderedIcon = elementToString(renderIcon(icon));
+		}
+	} else {
+		renderedIcon = elementToString(renderIcon(messagerow.ICON));
+	}
+
+
 	//Now start making the Table..
 	var userline = "<table width=100%><tr><td class=namefont> <a href='superchatter.html?uid="+MDS.minidappuid
 					+"&username="+usernameorig+
@@ -943,3 +954,44 @@ const getMaxAmount = () => {
 		document.getElementById('tip__amount').max = maxAmount;
 	});
 };
+
+
+
+// render the user's Maxima icon
+function renderIcon(maximaIcon) {
+    const dataImageBase64Regex = /^data:image\/(?:png|jpeg|gif|bmp|webp|svg\+xml);base64,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/;
+    const isBase64 = maximaIcon ? dataImageBase64Regex.test(decodeURIComponent(maximaIcon)) : false;
+
+    if (isBase64) {
+        const div = document.createElement('div');
+        div.className = 'avatar';
+
+        const img = document.createElement('img');
+        img.src = decodeURIComponent(maximaIcon);
+        img.alt = 'maxima-icon';
+
+        div.appendChild(img);
+        return div;
+    }
+
+    const regexp = /[\p{Extended_Pictographic}\u{1F3FB}-\u{1F3FF}\u{1F9B0}-\u{1F9B3}]/gu;
+    const nameEmojiMatches = MAXIMA_USERNAME.match(regexp);
+
+    if (nameEmojiMatches && nameEmojiMatches.length > 0) {
+        const span = document.createElement('span');
+		span.className = 'avatar';
+        span.textContent = nameEmojiMatches[0];
+        return span;
+    }
+
+    const defaultDiv = document.createElement('div');
+    defaultDiv.className = 'avatar';
+    defaultDiv.textContent = MAXIMA_USERNAME.charAt(0).toUpperCase();
+    return defaultDiv;
+}
+// helper method for renderIcon
+function elementToString(element) {
+    const wrapper = document.createElement('div');
+    wrapper.appendChild(element);
+    return wrapper.innerHTML;
+}
