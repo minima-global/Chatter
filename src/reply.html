@@ -929,8 +929,16 @@
 
           //Initialise Chatter
           initChatter(function () {
+            if (MAXIMA_USERNAME !== "noname") {
+              document.querySelector(".name").textContent =
+                ", " + MAXIMA_USERNAME;
+            }
+
+            const iconWrapper = elementToString(renderIcon(MAXIMA_ICON, MAXIMA_USERNAME));            
+
             document.getElementById("header").innerHTML = templates.header({
               username: MAXIMA_USERNAME,
+              icon: iconWrapper,
             });
           });
 

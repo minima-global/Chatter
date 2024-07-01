@@ -1,5 +1,9 @@
 # Changelog
 
+##### [1.10.3] - 01 July 24
+
+- Fix icon on older versions
+
 ##### [1.10.0] - 06 June 24
 
 - Modify how icons are supported

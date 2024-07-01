@@ -101,12 +101,12 @@ async function createMessageTable(messagerow, allsuperchatters, showactions, dep
 		if (getIcon !== null) {
 			var ic = decodeStringFromDB(getIcon);
 			var icon = DOMPurify.sanitize(ic+"");
-			renderedIcon = elementToString(renderIcon(icon));
+			renderedIcon = elementToString(renderIcon(icon, usernameorig));
 		} else {
-			renderedIcon = elementToString(renderIcon(null));
+			renderedIcon = elementToString(renderIcon(null, usernameorig));
 		}
 	} else {
-		renderedIcon = elementToString(renderIcon(messagerow.ICON));
+		renderedIcon = elementToString(renderIcon(messagerow.ICON, usernameorig));
 	}
 
 
@@ -960,7 +960,7 @@ const getMaxAmount = () => {
 
 
 // render the user's Maxima icon
-function renderIcon(maximaIcon) {
+function renderIcon(maximaIcon, usernameorig) {
 	try {
 		const dataImageBase64Regex = /^data:image\/(?:png|jpeg|gif|bmp|webp|svg\+xml);base64,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/;
 		const isBase64 = maximaIcon ? dataImageBase64Regex.test(decodeURIComponent(maximaIcon)) : false;
@@ -978,7 +978,7 @@ function renderIcon(maximaIcon) {
 		}
 	
 		const regexp = /[\p{Extended_Pictographic}\u{1F3FB}-\u{1F3FF}\u{1F9B0}-\u{1F9B3}]/gu;
-		const nameEmojiMatches = MAXIMA_USERNAME.match(regexp);
+		const nameEmojiMatches = usernameorig.match(regexp);
 	
 		if (nameEmojiMatches && nameEmojiMatches.length > 0) {
 			const span = document.createElement('span');
@@ -989,13 +989,13 @@ function renderIcon(maximaIcon) {
 		
 		const defaultDiv = document.createElement('div');
 		defaultDiv.className = 'avatar';
-		defaultDiv.textContent = MAXIMA_USERNAME.charAt(0).toUpperCase();
+		defaultDiv.textContent = usernameorig.charAt(0).toUpperCase();
 		return defaultDiv;
 	} catch (error) {
 		
 		const defaultDiv = document.createElement('div');
 		defaultDiv.className = 'avatar';
-		defaultDiv.textContent = MAXIMA_USERNAME.charAt(0).toUpperCase();
+		defaultDiv.textContent = usernameorig.charAt(0).toUpperCase();
 		return defaultDiv;
 	}
 
