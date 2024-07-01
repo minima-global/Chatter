@@ -314,12 +314,6 @@ html {
     gap: 8px;
 }
 
-.feed-item__profile-wrapper {
-    display: grid;
-    grid-template-columns: 32px 1fr;
-    gap: 8px;
-}
-
 .popout-nav {
     margin: 0;
     padding: 5px;

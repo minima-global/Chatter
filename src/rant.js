@@ -102,6 +102,8 @@ async function createMessageTable(messagerow, allsuperchatters, showactions, dep
 			var ic = decodeStringFromDB(getIcon);
 			var icon = DOMPurify.sanitize(ic+"");
 			renderedIcon = elementToString(renderIcon(icon));
+		} else {
+			renderedIcon = elementToString(renderIcon(null));
 		}
 	} else {
 		renderedIcon = elementToString(renderIcon(messagerow.ICON));
@@ -959,35 +961,45 @@ const getMaxAmount = () => {
 
 // render the user's Maxima icon
 function renderIcon(maximaIcon) {
-    const dataImageBase64Regex = /^data:image\/(?:png|jpeg|gif|bmp|webp|svg\+xml);base64,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/;
-    const isBase64 = maximaIcon ? dataImageBase64Regex.test(decodeURIComponent(maximaIcon)) : false;
+	try {
+		const dataImageBase64Regex = /^data:image\/(?:png|jpeg|gif|bmp|webp|svg\+xml);base64,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/;
+		const isBase64 = maximaIcon ? dataImageBase64Regex.test(decodeURIComponent(maximaIcon)) : false;
+	
+		if (isBase64) {
+			const div = document.createElement('div');
+			div.className = 'avatar';
+	
+			const img = document.createElement('img');
+			img.src = decodeURIComponent(maximaIcon);
+			img.alt = 'maxima-icon';
+	
+			div.appendChild(img);
+			return div;
+		}
+	
+		const regexp = /[\p{Extended_Pictographic}\u{1F3FB}-\u{1F3FF}\u{1F9B0}-\u{1F9B3}]/gu;
+		const nameEmojiMatches = MAXIMA_USERNAME.match(regexp);
+	
+		if (nameEmojiMatches && nameEmojiMatches.length > 0) {
+			const span = document.createElement('span');
+			span.className = 'avatar';
+			span.textContent = nameEmojiMatches[0];
+			return span;
+		}
+		
+		const defaultDiv = document.createElement('div');
+		defaultDiv.className = 'avatar';
+		defaultDiv.textContent = MAXIMA_USERNAME.charAt(0).toUpperCase();
+		return defaultDiv;
+	} catch (error) {
+		
+		const defaultDiv = document.createElement('div');
+		defaultDiv.className = 'avatar';
+		defaultDiv.textContent = MAXIMA_USERNAME.charAt(0).toUpperCase();
+		return defaultDiv;
+	}
 
-    if (isBase64) {
-        const div = document.createElement('div');
-        div.className = 'avatar';
 
-        const img = document.createElement('img');
-        img.src = decodeURIComponent(maximaIcon);
-        img.alt = 'maxima-icon';
-
-        div.appendChild(img);
-        return div;
-    }
-
-    const regexp = /[\p{Extended_Pictographic}\u{1F3FB}-\u{1F3FF}\u{1F9B0}-\u{1F9B3}]/gu;
-    const nameEmojiMatches = MAXIMA_USERNAME.match(regexp);
-
-    if (nameEmojiMatches && nameEmojiMatches.length > 0) {
-        const span = document.createElement('span');
-		span.className = 'avatar';
-        span.textContent = nameEmojiMatches[0];
-        return span;
-    }
-
-    const defaultDiv = document.createElement('div');
-    defaultDiv.className = 'avatar';
-    defaultDiv.textContent = MAXIMA_USERNAME.charAt(0).toUpperCase();
-    return defaultDiv;
 }
 // helper method for renderIcon
 function elementToString(element) {
