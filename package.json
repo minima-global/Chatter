@@ -2,7 +2,7 @@
   "name": "chatter",
   "private": true,
   "description": "Social Message Web",
-  "version": "1.10.3",
+  "version": "1.10.4",
   "type": "module",
   "scripts": {
     "build": "cp -r ./src/* ./build",
