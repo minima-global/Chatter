@@ -1,5 +1,21 @@
 # Changelog
 
+##### [1.12.0] - 02 October 24
+
+- A maximum of 20 messages are now re-chatted per hour
+
+##### [1.11.1] - 01 October 24
+
+- Users are now super chatter by default unless they are marked as non-super chatter
+- Added version number in the title bar
+- Fixed an issue where the star that showed if a user was a super chatter was not showing
+
+##### [1.11.0] - 01 October 24
+
+- Users are now super chatter by default unless they are marked as non-super chatter
+- Added version number in the title bar
+- Fixed an issue where the star that showed if a user was a super chatter was not showing
+
 ##### [1.10.3] - 01 July 24
 
 - Fix icon on older versions

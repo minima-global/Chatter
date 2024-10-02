@@ -30,7 +30,7 @@ function createMainTable(maxtime,callback){
 async function drawCompleteMainTable(thetable,allrows,callback){
 
 	//Get all the super chatters
-	selectAllSuperChatters(async function(superchatters){
+	selectAllNotSuperChatters(async function(superchatters){
 		var len = allrows.length;
 		for(var i=0;i<len;i++){
 			// var tablerow 	= thetable.insertRow(i);
@@ -51,7 +51,7 @@ async function drawCompleteMainTable(thetable,allrows,callback){
 	});
 }
 
-async function createMessageTable(messagerow, allsuperchatters, showactions, depth = 0, reactions = { show: false }){
+async function createMessageTable(messagerow, allnotsuperchatters, showactions, depth = 0, reactions = { show: false }){
 	//Sanitize and clean the input - allow our custom youtube tag
 	var dbmsg 		= decodeStringFromDB(messagerow.MESSAGE).replaceAll("\n","<br>");
 	var msg 		= DOMPurify.sanitize(dbmsg,{
@@ -83,10 +83,12 @@ async function createMessageTable(messagerow, allsuperchatters, showactions, dep
 	var dd 		= new Date(+messagerow.RECDATE);
 	var datestr = dd.toDateString()+" "+dd.toLocaleTimeString()+"&nbsp;";
 	var prettyPostedAt = moment(dd).fromNow();
-	var superChatter = checkInSuperChatters(publickey,allsuperchatters);
 	var isParent = parentid === "0x00";
 	var uid = MDS.minidappuid;
 	var isPosted = !!messagerow.ID;
+
+	// if the user is found in not super chatter list, then they're not a super chatter
+	var superChatter = !checkIsSuperChatter(publickey,allnotsuperchatters);
 
 	//Are they a SUPER CHATTER
 	var un = decodeStringFromDB(messagerow.USERNAME);
@@ -214,7 +216,7 @@ async function createMessageTable(messagerow, allsuperchatters, showactions, dep
 	});
 }
 
-function checkInSuperChatters(publickey,all){
+function checkIsSuperChatter(publickey,all){
 	var len = all.length;
 	for(var i=0;i<len;i++){
 		var pubk = all[i].PUBLICKEY;

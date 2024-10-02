@@ -62,7 +62,7 @@ function createDB(callback){
 	MDS.sql(initsql,function(msg){
 
 		//Create the Super Chatter table
-		var initsuper = "CREATE TABLE IF NOT EXISTS `superchatter` ( "
+		var initsuper = "CREATE TABLE IF NOT EXISTS `not_superchatter` ( "
 						+"  `id` bigint auto_increment, "
 						+"  `publickey` varchar(512) NOT NULL, "
 						+"  `username` varchar(512) NOT NULL, "
@@ -124,13 +124,13 @@ function selectSuperChatter(publickey,callback){
 }
 
 function isSuperChatter(publickey,callback){
-	MDS.sql("SELECT publickey FROM SUPERCHATTER WHERE publickey='"+publickey+"'", function(sqlmsg){
-		if(sqlmsg.count>0){
-			callback(true);
-		}else{
-			callback(false);
-		}
-	});
+  MDS.sql("SELECT publickey FROM NOT_SUPERCHATTER WHERE publickey='"+publickey+"'", function(sqlmsg){
+    if(sqlmsg.count>0){
+      callback(false);
+    }else{
+      callback(true);
+    }
+  });
 }
 
 function selectAllSuperChatters(callback){
@@ -138,6 +138,13 @@ function selectAllSuperChatters(callback){
 		callback(sqlmsg.rows);
 	});
 }
+
+function selectAllNotSuperChatters(callback){
+	MDS.sql("SELECT publickey FROM NOT_SUPERCHATTER", function(sqlmsg){
+		callback(sqlmsg.rows);
+	});
+}
+
 
 /**
  * Select All the recent messages
@@ -568,7 +575,7 @@ function requestUserToBeSuperChatter(pubkey, username) {
 }
 
 function makeUserASuperChatter(pubkey, username){
-	var sql = "INSERT INTO superchatter (publickey,username) VALUES ('"+pubkey+"','"+username+"')";
+	var sql = "DELETE FROM not_superchatter WHERE publickey='"+pubkey+"'";
 
 	MDS.sql(sql,function(){
 		window.location.reload(true);
@@ -580,7 +587,7 @@ function makeUserASuperChatter(pubkey, username){
  * @param username
  */
 function removeUserSuperChatter(pubkey, username){
-	var sql = "DELETE FROM superchatter WHERE publickey='"+pubkey+"'";
+	var sql = "INSERT INTO not_superchatter (publickey,username) VALUES ('"+pubkey+"','"+username+"')";
 
 	MDS.sql(sql,function(){
 		window.location.reload(true);

@@ -10,6 +10,8 @@ MDS.load("chatter.js");
 //Are we logging data
 var logs = false;
 
+var count = 0;
+
 //Main message handler..
 MDS.init(function(msg){
 
@@ -35,6 +37,8 @@ MDS.init(function(msg){
 
 	//Do a Resync requset..
 	}else if(msg.event == "MDS_TIMER_1HOUR"){
+
+		count = 0;
 
 		//Current time
 		var currentdate = new Date();
@@ -165,7 +169,9 @@ MDS.init(function(msg){
 											//Are they a SUPER CHATTER
 											isSuperChatter(rantjson.message.publickey,function(found){
 
-												if(found){
+												if(found && count <= 20){
+													count = count + 1; // increment the counter
+
 													//Rerant it..
 													updateRechatter(rantjson.messageid,function(){
 														MDS.comms.solo("NEWCHATTER");

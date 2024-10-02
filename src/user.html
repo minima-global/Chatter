@@ -143,6 +143,18 @@
 							</clipPath>
 						</defs>
 					</svg>
+					<div style="
+						color: #ecff76;
+						margin-left: 13px;
+						font-weight: bold;
+						font-size: 11px;
+						border: 2px solid #3c3c3c;
+						border-radius: 14px;
+						padding: 1px 6px;
+						letter-spacing: 0.2px;
+						">
+						v1.11.0
+					</div>
 				</div>
 				<div class="header__right">
 					<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity: 0">
@@ -575,7 +587,7 @@
 				return value > 2;
 			});
 
-			var allsuperchatters = [];
+			var allnotsuperchatters = [];
 			var publicKey = MDS.form.getParams("publicKey");
 			var baseid = MDS.form.getParams("baseid");
 			var msgid  = MDS.form.getParams("msgid");
@@ -591,7 +603,7 @@
 			}
 
 			async function walkchat(chatrow, depth){
-				var replymsg 	= await createMessageTable(chatrow,allsuperchatters,true,depth);
+				var replymsg 	= await createMessageTable(chatrow,allnotsuperchatters,true,depth);
 
 				if (!replymsg) {
 					return;
@@ -663,8 +675,8 @@
 						NODE_ADDRESS = msg.response.miniaddress;
 					});
 
-					selectAllSuperChatters(function(supers){
-						allsuperchatters = supers;
+					selectAllNotSuperChatters(function(supers){
+						allnotsuperchatters = supers;
 
 						//Create the reply table
 						var tree = createHistoryTable(publicKey, async function(treemsg){
@@ -675,7 +687,7 @@
 							for (var msg of sortedMessageTreeFromNewestToOldest) {
 								const children = await selectChildMessages(msg.MESSAGEID);
 								const reactions = await getReactions(children.rows);
-								var replymsg = await createMessageTable(msg,allsuperchatters,true,1,reactions);
+								var replymsg = await createMessageTable(msg,allnotsuperchatters,true,1,reactions);
 
 								if (replymsg) {
 
